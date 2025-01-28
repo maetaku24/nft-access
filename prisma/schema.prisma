@@ -1,5 +1,9 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// schema の変更を migration を生成せずにDBへ反映
+// npx prisma db push
+// prisma client の生成
+// npx prisma generate
+// マスタデータの流し込み
+// npx prisma db seed
 
 generator client {
   provider = "prisma-client-js"
@@ -11,28 +15,17 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// Userテーブル
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  profile   Profile?
-}
-
 // Profileテーブル
 model Profile {
-  id            Int      @id @default(autoincrement())
-  userId        Int      @unique
-  name          String?
-  email         String
-  walletAddress String?
-  iconKey       String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  events        Event[]
+  id             Int      @id @default(autoincrement())
+  supabaseUserId Int      @unique
+  name           String?
+  email          String
+  walletAddress  String?
+  iconKey        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  events         Event[]
 }
 
 // Eventテーブル
@@ -82,8 +75,8 @@ enum Standard {
 
 // NFTネットワーク
 enum Network {
-  Ethereum
-  Polygon
+  ETHEREUM
+  POLYGON
 }
 
 // EventとScheduleの中間テーブル
@@ -114,8 +107,8 @@ model Schedule {
 
 // 週間か日程
 enum Type {
-  weekday
-  date
+  WEEKDAY
+  DATE
 }
 
 // Reservationテーブル
@@ -137,7 +130,7 @@ model Reservation {
 
 // 更新状態
 enum Status {
-  completed
-  updated
-  cancelled
+  COMPLETED
+  UPDATED
+  CANCELLED
 }
