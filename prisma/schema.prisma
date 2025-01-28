@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Userテーブル
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile?
+}
+
+// Profileテーブル
+model Profile {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  name          String?
+  email         String
+  walletAddress String?
+  iconKey       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events        Event[]
+}
+
+// Eventテーブル
+model Event {
+  id             Int      @id @default(autoincrement())
+  profileId      Int
+  eventName      String
+  length         Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  eventNFTs      EventNFT[]
+  eventSchedules EventSchedule[]
+  reservation    Reservation[]
+}
+
+// EventとNFTの中間テーブル
+model EventNFT {
+  id         Int      @id @default(autoincrement())
+  eventId    Int
+  nftId      Int
+  createdAt  DateTime @default(now())
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  nft        NFT      @relation(fields: [nftId], references: [id], onDelete: Cascade)
+}
+
+// NFTテーブル
+model NFT {
+  id              Int      @id @default(autoincrement())
+  collectionName  String
+  standard        Standard
+  network         Network
+  contractAddress String
+  tokenId         Int?
+  minBalance      Int
+  maxBalance      Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  eventNFTs       EventNFT[]
+}
+
+// NFT規格
+enum Standard {
+  ERC721
+  ERC1155
+}
+
+// NFTネットワーク
+enum Network {
+  Ethereum
+  Polygon
+}
+
+// EventとScheduleの中間テーブル
+model EventSchedule {
+  id         Int      @id @default(autoincrement())
+  eventId    Int
+  scheduleId Int
+  createdAt  DateTime @default(now())
+  schedule   Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+// Scheduleテーブル
+model Schedule {
+  id              Int      @id @default(autoincrement())
+  eventId         Int
+  type            Type  
+  weekday         String?
+  date            DateTime?
+  startTime       DateTime
+  endTime         DateTime
+  maxParticipants Int?
+  isClosed        Boolean?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  eventSchedules  EventSchedule[]
+}
+
+// 週間か日程
+enum Type {
+  weekday
+  date
+}
+
+// Reservationテーブル
+model Reservation {
+  id              Int      @id @default(autoincrement())
+  eventId         Int
+  name            String
+  email           String
+  participants    Int
+  walletAddress   String
+  reservationDate DateTime
+  startTime       DateTime
+  endTime         DateTime
+  status          Status
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  events          Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+// 更新状態
+enum Status {
+  completed
+  updated
+  cancelled
+}
