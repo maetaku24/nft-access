@@ -18,7 +18,7 @@ datasource db {
 // Profileテーブル
 model Profile {
   id             Int      @id @default(autoincrement())
-  supabaseUserId Int      @unique
+  supabaseUserId String      @unique
   name           String?
   email          String
   walletAddress  String?
