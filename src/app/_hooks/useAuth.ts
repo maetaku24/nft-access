@@ -42,7 +42,7 @@ export const useAuth = () => {
       const name = email.split('@')[0];
       const body = { supabaseUserId, name, email };
 
-      const res = await postRequest<profile>('profile', body);
+      const res = await postRequest<profile, profile>('profile', body);
       console.log('プロファイル作成成功:', res);
 
       alert('確認メールを送信しました。');

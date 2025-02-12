@@ -28,10 +28,10 @@ const apiRequest = async <ResponseData = any>({
 export const getRequest = <ResponseData>(path: string, token?: string) =>
   apiRequest<ResponseData>({ path, method: 'GET', token });
 
-export const postRequest = <ResponseData>(path: string, body: any, token?: string) =>
+export const postRequest = <RequestData, ResponseData>(path: string, body: RequestData, token?: string) =>
   apiRequest<ResponseData>({ path, method: 'POST', body, token });
 
-export const putRequest = <ResponseData>(path: string, body: any, token?: string) =>
+export const putRequest = <RequestData, ResponseData>(path: string, body: RequestData, token?: string) =>
   apiRequest<ResponseData>({ path, method: 'PUT', body, token });
 
 export const deleteRequest = <ResponseData>(path: string, token?: string) =>
