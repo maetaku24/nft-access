@@ -1,67 +1,19 @@
 'use client';
 
-import { supabase } from '@/utils/spabase';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { userAuthSchema, userAuth } from '@/app/_schemas/userAuthSchema';
+import { useAuth } from '../_hooks/useAuth';
 import TextInput from '../_components/TextInput';
 import Button from '../_components/Button';
 import Link from 'next/link';
 
 export default function SiguUpPaga() {
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<userAuth>({
-    resolver: zodResolver(userAuthSchema),
-    mode: 'onBlur', // 初回はフォーカスアウト時にバリデーション
-    reValidateMode: 'onBlur', // 再入力時もフォーカスアウトでバリデーション
-  });
-
-  const onSubmit: SubmitHandler<userAuth> = async (data) => {
-    try {
-      const { email, password } = data;
-      const { data: signUpData, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `http://localhost:3000/login`,
-        },
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      // signup時に作成されるidをsupabaseUserIdに格納
-      const supabaseUserId = signUpData.user?.id;
-      if (!supabaseUserId) {
-        throw new Error('ユーザーIDが取得できませんでした');
-      }
-
-      // 入力されたemailの@より前の文字をnameに格納
-      const name = email.split('@')[0];
-
-      const res = await fetch('/api/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          supabaseUserId,
-          name,
-          email,
-        }),
-      });
-
-      if (!res.ok) throw new Error('送信に失敗しました');
-
-      alert('確認メールを送信しました。');
-      reset();
-    } catch (error) {
-      alert('ユーザー登録に失敗しました。');
-    }
-  };
+    signup,
+    methods: {
+      register,
+      handleSubmit,
+      formState: { errors, isSubmitting },
+    },
+  } = useAuth();
 
   return (
     <div className='min-h-screen flex items-start justify-center pt-28 bg-gray-100'>
@@ -69,7 +21,7 @@ export default function SiguUpPaga() {
         <h1 className='text-center text-[32px] font-bold text-gray-900 mb-20'>
           新規登録
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(signup)}>
           <div className='space-y-5'>
             <TextInput
               label='メールアドレス'

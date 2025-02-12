@@ -1,43 +1,19 @@
 'use client';
 
-import { supabase } from '@/utils/spabase';
-import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { userAuthSchema, userAuth } from '@/app/_schemas/userAuthSchema';
+import { useAuth } from '../_hooks/useAuth';
 import TextInput from '../_components/TextInput';
 import Button from '../_components/Button';
 import Link from 'next/link';
 
 export default function LoginPage() {
-  const router = useRouter();
   const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<userAuth>({
-    resolver: zodResolver(userAuthSchema),
-    mode: 'onBlur', // 初回はフォーカスアウト時にバリデーション
-    reValidateMode: 'onBlur', // 再入力時もフォーカスアウトでバリデーション
-  });
-
-  const onSubmit: SubmitHandler<userAuth> = async (data) => {
-    try {
-      const { email, password } = data;
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-      router.replace('/dashboard')
-    } catch (error) {
-      alert("ログインに失敗しました");
-    }
-  };
+    login,
+    methods: {
+      register,
+      handleSubmit,
+      formState: { errors, isSubmitting },
+    },
+  } = useAuth();
 
   return (
     <div className='min-h-screen flex items-start justify-center pt-28 bg-gray-100'>
@@ -45,13 +21,13 @@ export default function LoginPage() {
         <h1 className='text-center text-[32px] font-bold text-gray-900 mb-20'>
           ログイン
         </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(login)}>
           <div className='space-y-5'>
             <TextInput
               label='メールアドレス'
               id='email'
               type='email'
-              autoComplete="username"
+              autoComplete='username'
               placeholder='your@example.com'
               {...register('email')}
               disabled={isSubmitting}
@@ -61,7 +37,7 @@ export default function LoginPage() {
               label='パスワード'
               id='password'
               type='password'
-              autoComplete="current-password"
+              autoComplete='current-password'
               placeholder='• • • • • • • •'
               {...register('password')}
               disabled={isSubmitting}
@@ -87,5 +63,5 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }
