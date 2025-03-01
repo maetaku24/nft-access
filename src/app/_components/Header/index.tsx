@@ -1,10 +1,10 @@
 'use client';
 
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
-import { supabase } from '@/utils/spabase';
+import { supabase } from '@/utils/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import React, { use } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Button from '../Button';
 import Avatar from './avatar';
