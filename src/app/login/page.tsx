@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '../_hooks/useAuth';
+import { useLoginForm } from './_hooks/useLoginForm';
 import TextInput from '../_components/TextInput';
 import Button from '../_components/Button';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ export default function LoginPage() {
       handleSubmit,
       formState: { errors, isSubmitting },
     },
-  } = useAuth();
+  } = useLoginForm();
 
   return (
     <div className='min-h-screen flex items-start justify-center pt-28 bg-gray-100'>
@@ -53,12 +53,10 @@ export default function LoginPage() {
           >
             {isSubmitting ? '送信中...' : 'ログイン'}
           </Button>
-          <p className='text-xs text-gray-400 font-medium mt-6'>
-            アカウントをお持ちでない場合は
-            <Link href='/signup' className='text-sm font-bold underline'>
-              こちら
+          <p className='text-xs text-gray-500 font-medium mt-6'>
+            <Link href='/signup' className='underline'>
+              アカウントをお持ちでない場合はこちらから新規登録してください。
             </Link>
-            から新規登録してください。
           </p>
         </form>
       </div>
