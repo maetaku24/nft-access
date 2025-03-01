@@ -49,11 +49,11 @@ model EventNFT {
   nftId      Int
   createdAt  DateTime @default(now())
   event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  nft        NFT      @relation(fields: [nftId], references: [id], onDelete: Cascade)
+  nft        Nft      @relation(fields: [nftId], references: [id], onDelete: Cascade)
 }
 
 // NFTテーブル
-model NFT {
+model Nft {
   id              Int      @id @default(autoincrement())
   collectionName  String
   standard        Standard
@@ -92,12 +92,11 @@ model EventSchedule {
 // Scheduleテーブル
 model Schedule {
   id              Int      @id @default(autoincrement())
-  eventId         Int
   type            Type  
   weekday         String?
   date            DateTime?
-  startTime       DateTime
-  endTime         DateTime
+  startTime       String
+  endTime         String
   maxParticipants Int?
   isClosed        Boolean?
   createdAt       DateTime @default(now())
@@ -120,8 +119,8 @@ model Reservation {
   participants    Int
   walletAddress   String
   reservationDate DateTime
-  startTime       DateTime
-  endTime         DateTime
+  startTime       String
+  endTime         String
   status          Status
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
