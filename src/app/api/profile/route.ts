@@ -1,48 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { supabase } from '@/utils/spabase';
-import { profileSchema } from '@/app/_schemas/profileSchema';
+import { supabase } from '@/utils/supabase';
+import prisma from '@/utils/prisma';
+import { CreateProfileRequest, CreateProfileResponse } from '@/app/_types/profile/CreateProfile';
 
-const prisma = new PrismaClient();
+export const GET = async (request: NextRequest) => {
+  const token = request.headers.get('Authorization') ?? '';
+  const { data, error } = await supabase.auth.getUser(token);
 
-// POSTリクエスト
-export const POST = async (request: Request) => {
+  if (error) {
+    return NextResponse.json({ status: error.message }, { status: 400 });
+  }
+
+  const supabaseUserId = data.user?.id;
+
   try {
-    const body = await request.json();
+    const data = await prisma.profile.findUnique({
+      where: {
+        supabaseUserId,
+      },
+    });
 
-    // safeParseで常にオブジェクトを返す（エラーをスローしない）
-    const validation = profileSchema.safeParse(body);
-
-    // もしバリデーションが成功しなければエラーを返す
-    if (!validation.success) {
+    if (!data) {
       return NextResponse.json(
-        { status: 'バリデーションエラー', error: validation.error.format() },
-        { status: 400 }
+        { status: 'エラー', message: 'プロフィールが見つかりません' },
+        { status: 404 }
       );
     }
 
-    // validationの中身をvalidationDataへ格納
-    const validationData = validation.data;
+    return NextResponse.json({ data }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ status: error.message }, { status: 400 });
+    }
+  }
+};
 
-    // validationDataからsupabaseUserId, name, email, walletAddress, iconKeyを取り出す
-    const { supabaseUserId, name, email, walletAddress, iconKey } =
-      validationData;
+export const POST = async (request: Request) => {
+  try {
+    const { supabaseUserId, name, email }: CreateProfileRequest =
+      await request.json();
 
     // profileをDBに生成
     const data = await prisma.profile.create({
       data: {
         supabaseUserId,
-        name: name || null,
+        name,
         email,
-        walletAddress: walletAddress || null,
-        iconKey: iconKey || null,
       },
     });
-    return NextResponse.json({
-      status: 'OK',
-      message: '作成しました',
-      id: data.id,
-    });
+    return NextResponse.json<CreateProfileResponse>(
+      {
+        id: data.id,
+        message: 'プロフィールが作成されました',
+      },
+      { status: 200 }
+    );
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ status: error.message }, { status: 400 });
