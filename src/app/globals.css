@@ -5,3 +5,15 @@
 body {
   @apply bg-[#F5F5F7] text-gray-900;
 }
+
+.Toastify__toast-theme--colored.Toastify__toast--success {
+  @apply bg-green-300 font-bold;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--info {
+  @apply bg-[#0067c0] font-bold;
+}
+
+.Toastify__toast-theme--colored.Toastify__toast--error {
+  @apply bg-[e34234] font-bold;
+}
