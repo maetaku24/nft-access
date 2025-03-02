@@ -2,7 +2,6 @@ import { Nft } from '../nft'
 import { Schedule } from '../schedule'
 
 export interface CreateEventRequest {
-  profileId: number;
   eventName: string;
   length: number;
   nfts: Nft[];
