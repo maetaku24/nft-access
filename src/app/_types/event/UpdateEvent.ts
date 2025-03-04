@@ -2,12 +2,10 @@ import { Nft } from '../nft'
 import { Schedule } from '../schedule'
 
 export interface UpdateEventRequest {
-  id: number;
-  profileId: number;
   eventName: string;
   length: number;
-  nft: Nft;
-  Schedule: Schedule[]
+  nfts: Nft[];
+  schedules: Schedule[]
 }
 
 export interface UpdateEventResponse {

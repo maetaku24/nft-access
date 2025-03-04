@@ -11,7 +11,7 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({ status: error.message }, { status: 400 });
   }
 
-  const supabaseUserId = data.user?.id;
+  const supabaseUserId = data.user.id;
 
   try {
     const data = await prisma.profile.findUnique({

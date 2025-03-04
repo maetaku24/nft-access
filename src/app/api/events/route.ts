@@ -63,7 +63,7 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const eventId = await prisma.$transaction(async (prisma) => {
+    const eventCreate = await prisma.$transaction(async (prisma) => {
       const { eventName, length, nfts, schedules }: CreateEventRequest =
         await request.json();
 
@@ -76,6 +76,7 @@ export const POST = async (request: Request) => {
             length,
           },
         }),
+        // createManyではidを返さないのでPromise.allで処理
         Promise.all(
           nfts.map((nft) =>
             prisma.nft.create({
@@ -108,6 +109,7 @@ export const POST = async (request: Request) => {
         ),
       ]);
 
+      // 作成された内容のidを元に中間テーブルの作成
       await Promise.all([
         prisma.eventNFT.createMany({
           data: nftData.map(nft => ({
@@ -127,7 +129,7 @@ export const POST = async (request: Request) => {
     });
     return NextResponse.json<CreateEventResponse>({
       message: '作成しました',
-      id: eventId,
+      id: eventCreate,
     });
   } catch (error) {
     if (error instanceof Error) {

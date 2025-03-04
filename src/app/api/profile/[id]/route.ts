@@ -15,7 +15,7 @@ export const PUT = async (
     return NextResponse.json({ status: error.message }, { status: 400 });
   }
 
-  const supabaseUserId = data.user?.id;
+  const supabaseUserId = data.user.id;
 
   try {
     const { name, walletAddress, iconKey }: UpdateProfileRequest =
