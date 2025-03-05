@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { supabase } from '@/utils/supabase';
 import { postRequest } from '@/app/_utils/api';
+import { appBaseUrl } from '@/config/app-config';
 import { SignupForm, signupSchema } from '../_schema/signupSchema';
 import {
   CreateProfileRequest,
@@ -24,7 +25,7 @@ export const useSignupForm = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `http://localhost:3000/login`,
+          emailRedirectTo: `${appBaseUrl}/login`,
         },
       });
 
