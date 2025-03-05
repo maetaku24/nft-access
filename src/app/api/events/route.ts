@@ -1,26 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
-import { supabase } from '@/utils/supabase';
+import { getCurrentUser } from '../_utils/getCurrentUser';
 import {
   CreateEventRequest,
   CreateEventResponse,
 } from '@/app/_types/event/CreateEvent';
 
 export const GET = async (request: NextRequest) => {
-  const token = request.headers.get('Authorization') ?? '';
-  const { data, error } = await supabase.auth.getUser(token);
-
-  if (error) {
-    return NextResponse.json({ status: error.message }, { status: 400 });
-  }
-
-  const supabaseUserId = data.user.id;
-
   try {
+    const profile = await getCurrentUser(request);
     const events = await prisma.event.findMany({
       where: {
         profile: {
-          supabaseUserId,
+          id: profile.id,
         },
       },
     });
@@ -40,28 +32,9 @@ export const GET = async (request: NextRequest) => {
   }
 };
 
-export const POST = async (request: Request) => {
-  const token = request.headers.get('Authorization') ?? '';
-  const { data, error } = await supabase.auth.getUser(token);
-
-  if (error) {
-    return NextResponse.json({ status: error.message }, { status: 400 });
-  }
-
+export const POST = async (request: NextRequest) => {
   try {
-    const profile = await prisma.profile.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
-
-    // profileがnullの場合はすぐにエラーを返す
-    if (!profile) {
-      return NextResponse.json(
-        { status: 'ユーザー情報がありません' },
-        { status: 401 }
-      );
-    }
+    const profile = await getCurrentUser(request);
 
     const eventCreate = await prisma.$transaction(async (prisma) => {
       const { eventName, length, nfts, schedules }: CreateEventRequest =
@@ -112,13 +85,13 @@ export const POST = async (request: Request) => {
       // 作成された内容のidを元に中間テーブルの作成
       await Promise.all([
         prisma.eventNFT.createMany({
-          data: nftData.map(nft => ({
+          data: nftData.map((nft) => ({
             nftId: nft.id,
             eventId: eventData.id,
           })),
         }),
         prisma.eventSchedule.createMany({
-          data: scheduleData.map(schedule => ({
+          data: scheduleData.map((schedule) => ({
             scheduleId: schedule.id,
             eventId: eventData.id,
           })),

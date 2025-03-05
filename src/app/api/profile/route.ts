@@ -1,22 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/utils/supabase';
+import { getCurrentUser } from '../_utils/getCurrentUser';
 import prisma from '@/utils/prisma';
-import { CreateProfileRequest, CreateProfileResponse } from '@/app/_types/profile/CreateProfile';
+import {
+  CreateProfileRequest,
+  CreateProfileResponse,
+} from '@/app/_types/profile/CreateProfile';
 
 export const GET = async (request: NextRequest) => {
-  const token = request.headers.get('Authorization') ?? '';
-  const { data, error } = await supabase.auth.getUser(token);
-
-  if (error) {
-    return NextResponse.json({ status: error.message }, { status: 400 });
-  }
-
-  const supabaseUserId = data.user.id;
-
   try {
+    const profile = await getCurrentUser(request);
     const data = await prisma.profile.findUnique({
       where: {
-        supabaseUserId,
+        id: profile.id,
       },
     });
 

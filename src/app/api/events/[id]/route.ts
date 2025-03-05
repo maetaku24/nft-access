@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
-import { supabase } from '@/utils/supabase';
+import { getCurrentUser } from '../../_utils/getCurrentUser';
 import {
   UpdateEventRequest,
   UpdateEventResponse,
@@ -10,33 +10,14 @@ export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
-  const token = request.headers.get('Authorization') ?? '';
-  const { data, error } = await supabase.auth.getUser(token);
-
-  if (error) {
-    return NextResponse.json({ status: error.message }, { status: 400 });
-  }
-
   try {
     const eventId = parseInt(params.id);
-    const profile = await prisma.profile.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
-
-    // profileがnullの場合はすぐにエラーを返す
-    if (!profile) {
-      return NextResponse.json(
-        { status: 'ユーザー情報がありません' },
-        { status: 401 }
-      );
-    }
+    const profile = await getCurrentUser(request);
 
     const eventDetail = await prisma.event.findUnique({
       where: {
         id: eventId,
-        profile,
+        profileId: profile.id,
       },
       include: {
         eventNFTs: {
@@ -75,14 +56,14 @@ export const GET = async (
     if (!eventDetail) {
       return NextResponse.json(
         { message: 'イベントが存在しません' },
-        { status: 400 }
+        { status: 404 }
       );
     }
 
     return NextResponse.json({ eventDetail });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 404 });
+      return NextResponse.json({ status: error.message }, { status: 400 });
     }
   }
 };
@@ -91,44 +72,16 @@ export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
-  const token = request.headers.get('Authorization') ?? '';
-  const { data, error } = await supabase.auth.getUser(token);
-
-  if (error) {
-    return NextResponse.json({ status: error.message }, { status: 400 });
-  }
-
   try {
     const eventId = parseInt(params.id);
-    const profile = await prisma.profile.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
-
-    // profileがnullの場合はすぐにエラーを返す
-    if (!profile) {
-      return NextResponse.json(
-        { status: 'ユーザー情報がありません' },
-        { status: 401 }
-      );
-    }
+    const profile = await getCurrentUser(request);
 
     const updateEvent = await prisma.$transaction(async (prisma) => {
       const { eventName, length, nfts, schedules }: UpdateEventRequest =
         await request.json();
 
       // テーブルの削除
-      await prisma.eventNFT.deleteMany({
-        where: {
-          eventId,
-        },
-      });
-      await prisma.eventSchedule.deleteMany({
-        where: {
-          eventId,
-        },
-      });
+      // onDelete: Cascadeを設定しているので、親であるnftとscheduleが削除されれば自動的に中間テーブルも削除される
       await prisma.nft.deleteMany({
         where: {
           eventNFTs: {
@@ -153,6 +106,7 @@ export const PUT = async (
         prisma.event.update({
           where: {
             id: eventId,
+            profileId: profile.id,
           },
           data: {
             eventName,
@@ -215,7 +169,7 @@ export const PUT = async (
     });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 404 });
+      return NextResponse.json({ status: error.message }, { status: 400 });
     }
   }
 };
@@ -224,42 +178,14 @@ export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string } }
 ) => {
-  const token = request.headers.get('Authorization') ?? '';
-  const { data, error } = await supabase.auth.getUser(token);
-
-  if (error) {
-    return NextResponse.json({ status: error.message }, { status: 400 });
-  }
-
   try {
     const eventId = parseInt(params.id);
-    const profile = await prisma.profile.findUnique({
-      where: {
-        supabaseUserId: data.user.id,
-      },
-    });
-
-    // profileがnullの場合はすぐにエラーを返す
-    if (!profile) {
-      return NextResponse.json(
-        { status: 'ユーザー情報がありません' },
-        { status: 401 }
-      );
-    }
+    const profile = await getCurrentUser(request);
 
     // 関連データの削除
     await prisma.$transaction(async (prisma) => {
-      // 先に中間テーブルの削除
-      await prisma.eventNFT.deleteMany({
-        where: {
-          id: eventId,
-        },
-      });
-      await prisma.eventSchedule.deleteMany({
-        where: {
-          id: eventId,
-        },
-      });
+      // テーブルの削除
+      // onDelete: Cascadeを設定しているので、親であるevent・nft・scheduleが削除されれば自動的に中間テーブルも削除される
       await prisma.nft.deleteMany({
         where: {
           eventNFTs: {
@@ -292,7 +218,7 @@ export const DELETE = async (
     );
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 404 });
+      return NextResponse.json({ status: error.message }, { status: 400 });
     }
   }
 };
