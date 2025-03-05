@@ -49,37 +49,34 @@ export const POST = async (request: NextRequest) => {
             length,
           },
         }),
-        // createManyではidを返さないのでPromise.allで処理
-        Promise.all(
-          nfts.map((nft) =>
-            prisma.nft.create({
-              data: {
-                collectionName: nft.collectionName,
-                standard: nft.standard,
-                network: nft.network,
-                contractAddress: nft.contractAddress,
-                tokenId: nft.tokenId ?? null,
-                minBalance: nft.minBalance,
-                maxBalance: nft.maxBalance,
-              },
-            })
-          )
-        ),
-        Promise.all(
-          schedules.map((schedule) =>
-            prisma.schedule.create({
-              data: {
-                type: schedule.type,
-                weekday: schedule.weekday ?? null,
-                date: schedule.date ? new Date(schedule.date) : null,
-                startTime: schedule.startTime,
-                endTime: schedule.endTime,
-                maxParticipants: schedule.maxParticipants,
-                isClosed: schedule.isClosed,
-              },
-            })
-          )
-        ),
+        await prisma.nft.createManyAndReturn({
+          data: nfts.map((nft) => ({
+            collectionName: nft.collectionName,
+            standard: nft.standard,
+            network: nft.network,
+            contractAddress: nft.contractAddress,
+            tokenId: nft.tokenId ?? null,
+            minBalance: nft.minBalance,
+            maxBalance: nft.maxBalance,
+          })),
+          select: {
+            id: true,
+          },
+        }),
+        await prisma.schedule.createManyAndReturn({
+          data: schedules.map((schedule) => ({
+            type: schedule.type,
+            weekday: schedule.weekday ?? null,
+            date: schedule.date ? new Date(schedule.date) : null,
+            startTime: schedule.startTime,
+            endTime: schedule.endTime,
+            maxParticipants: schedule.maxParticipants,
+            isClosed: schedule.isClosed,
+          })),
+          select: {
+            id: true,
+          },
+        }),
       ]);
 
       // 作成された内容のidを元に中間テーブルの作成
