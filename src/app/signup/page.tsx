@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '../_hooks/useAuth';
+import { useSignupForm } from '@/app/signup/_hooks/useSignupForm'
 import TextInput from '../_components/TextInput';
 import Button from '../_components/Button';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ export default function SiguUpPaga() {
       handleSubmit,
       formState: { errors, isSubmitting },
     },
-  } = useAuth();
+  } = useSignupForm();
 
   return (
     <div className='min-h-screen flex items-start justify-center pt-28 bg-gray-100'>
@@ -41,6 +41,15 @@ export default function SiguUpPaga() {
               disabled={isSubmitting}
               errorMessage={errors.password?.message}
             />
+            <TextInput
+              label='確認用パスワード'
+              id='passwordConfirmation'
+              type='password'
+              placeholder='• • • • • • • •'
+              {...register('passwordConfirmation')}
+              disabled={isSubmitting}
+              errorMessage={errors.passwordConfirmation?.message}
+            />
           </div>
           <Button
             type='submit'
@@ -51,12 +60,10 @@ export default function SiguUpPaga() {
           >
             {isSubmitting ? '送信中...' : '送信'}
           </Button>
-          <p className='text-xs text-gray-400 font-medium mt-6'>
-            すでに登録済みの方は
-            <Link href='/login' className='text-sm font-bold underline'>
-              こちら
+          <p className='text-xs text-gray-500 font-medium mt-6'>
+            <Link href='/login' className='underline'>
+              すでに登録済みの方はこちらからログインしてください。
             </Link>
-            からログインしてください。
           </p>
         </form>
       </div>

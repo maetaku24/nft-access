@@ -1,4 +1,4 @@
-import { supabase } from '@/utils/spabase';
+import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
 import { useState, useEffect } from 'react';
 
@@ -9,7 +9,7 @@ export const useSupabaseSession = () => {
   const [isLoding, setIsLoding] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetcher = async () => {
+    const getSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
@@ -18,7 +18,15 @@ export const useSupabaseSession = () => {
       setIsLoding(false);
     };
 
-    fetcher();
+    getSession();
+
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setToken(session?.access_token || null);
+    });
+    return () => {
+      data?.subscription?.unsubscribe();
+    };
   }, []);
 
   return { session, isLoding, token };
