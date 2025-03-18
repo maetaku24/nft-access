@@ -3,12 +3,11 @@ import { nftSchema } from './nftSchema';
 import { scheduleSchema } from './scheduleSchema';
 
 export const EventSchema = z.object({
-  profileId: z.number(),
   eventName: z
-    .string()
+    .string({ message: 'イベント名を入力してください' })
     .min(1, 'イベント名を入力してください')
     .max(30, '30文字以内で入力してください'),
-  length: z.number().min(1, '予約確保時間を選択してください'),
+  length: z.coerce.number().min(15, '15分以上で設定してください'),
   nfts: z.array(nftSchema),
   schedules: z.array(scheduleSchema),
 });

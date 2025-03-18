@@ -5,7 +5,6 @@ const typeEnum = z.nativeEnum(Type);
 
 export const scheduleSchema = z
   .object({
-    id: z.number(),
     type: typeEnum,
     weekday: z.string().optional().nullable(),
     date: z.date().optional().nullable(),

@@ -6,11 +6,10 @@ const networkEnum = z.nativeEnum(Network);
 
 export const nftSchema = z
   .object({
-    id: z.number(),
-    collectionName: z.string().max(20, '20文字以内で入力してください'),
+    collectionName: z.string().min(1, 'コレクション名を入力してください').max(20, '20文字以内で入力してください'),
     standard: standardEnum,
     network: networkEnum,
-    contractAddress: z.string(),
+    contractAddress: z.string().min(1, 'コントラクトアドレスを入力してください'),
     tokenId: z.coerce.number().int().optional().nullable(),
     minBalance: z.coerce.number().int().min(1, '1以上を入力してください'),
     maxBalance: z.coerce.number().int().min(1, '1以上を入力してください'),
