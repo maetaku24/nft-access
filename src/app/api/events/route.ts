@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import dayjs from 'dayjs';
 import prisma from '@/utils/prisma';
 import { getCurrentUser } from '../_utils/getCurrentUser';
+import { handleError } from '@/app/api/_utils/handleError';
 import {
   CreateEventRequest,
   CreateEventResponse,
@@ -26,9 +28,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };
 
@@ -67,7 +67,7 @@ export const POST = async (request: NextRequest) => {
           data: schedules.map((schedule) => ({
             type: schedule.type,
             weekday: schedule.weekday ?? null,
-            date: schedule.date ? new Date(schedule.date) : null,
+            date: schedule.date ? dayjs(schedule.date).toDate() : null,
             startTime: schedule.startTime,
             endTime: schedule.endTime,
             maxParticipants: schedule.maxParticipants,
@@ -102,8 +102,6 @@ export const POST = async (request: NextRequest) => {
       id: eventCreate,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };

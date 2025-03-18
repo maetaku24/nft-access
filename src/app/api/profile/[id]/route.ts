@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/utils/prisma';
 import { getCurrentUser } from '../../_utils/getCurrentUser';
-import { supabase } from '@/utils/supabase';
+import { handleError } from '@/app/api/_utils/handleError';
 import {
   UpdateProfileRequest,
   UpdateProfileResponse,
@@ -33,8 +33,6 @@ export const PUT = async (
       { status: 200 }
     );
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 404 });
-    }
+    return handleError(error);
   }
 };

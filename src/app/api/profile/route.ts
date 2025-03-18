@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '../_utils/getCurrentUser';
 import prisma from '@/utils/prisma';
+import { handleError } from '@/app/api/_utils/handleError';
 import {
   CreateProfileRequest,
   CreateProfileResponse,
@@ -24,9 +25,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };
 
@@ -51,8 +50,6 @@ export const POST = async (request: Request) => {
       { status: 200 }
     );
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };
