@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '../_utils/getCurrentUser';
-import prisma from '@/utils/prisma';
+import { prisma } from '@/utils/prisma';
 import { handleError } from '@/app/api/_utils/handleError';
 import {
   CreateProfileRequest,

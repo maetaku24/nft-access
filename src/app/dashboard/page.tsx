@@ -1,11 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { CreateEventCard } from './_components/card/CreateEventCard';
 
 export default function DashboardPage() {
   return (
     <div>
-      <h1 className='flex justify-center items-start pt-12 font-bold text-6xl'>
-        ダッシュボードです。
-      </h1>
+      <div className='flex justify-center items-start mt-40'>
+        <CreateEventCard />
+      </div>
     </div>
-  )
+  );
 }

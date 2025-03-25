@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dayjs from 'dayjs';
-import prisma from '@/utils/prisma';
+import { prisma } from '@/utils/prisma';
 import { getCurrentUser } from '../_utils/getCurrentUser';
 import { handleError } from '@/app/api/_utils/handleError';
 import {

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import prisma from '@/utils/prisma';
+import { prisma } from '@/utils/prisma';
 import { supabase } from '@/utils/supabase';
 
 export const getCurrentUser = async (request: NextRequest) => {
