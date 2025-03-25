@@ -54,7 +54,7 @@ const TextInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
       <Input
         id={id}
         ref={ref}
-        className={inputStyle()}
+        className={inputStyle() + (className ? `${className} `: '')}
         disabled={disabled}
         {...rest}
       />

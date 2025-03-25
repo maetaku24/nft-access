@@ -53,6 +53,7 @@ export const useSignupForm = () => {
       toast.info('確認メールを送信しました。');
       reset();
     } catch (error) {
+      console.log(error)
       toast.error('ユーザー登録に失敗しました。');
     }
   };

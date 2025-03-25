@@ -3,10 +3,10 @@ export type ApiRequestHeader = Record<string, string | null> | undefined;
 
 
 type HpptMethods = 'GET' | 'POST' | 'PUT' | 'DELETE';
-export interface ApiRequestOptions {
+export interface ApiRequestOptions<T = unknown> {
   path: string;
   method: HpptMethods;
-  body?: any;
+  body?: T;
   token?: string;
   headers?: ApiRequestHeader;
 }

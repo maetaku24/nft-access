@@ -20,7 +20,7 @@ export interface FormSelectProps<T extends FieldValues>
   label: string;
   options: { value: string; label: string }[];
   placeholder?: string;
-  [x: string]: any;
+  [x: string]: unknown;
 }
 
 export function FormSelect<S extends FieldValues>({

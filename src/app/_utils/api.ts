@@ -1,6 +1,6 @@
 import { ApiRequestOptions } from '../_types/ApiRequest';
 
-const apiRequest = async <ResponseData = any>({
+const apiRequest = async <ResponseData>({
   path,
   method,
   body,

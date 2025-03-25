@@ -30,6 +30,7 @@ export const useLoginForm = () => {
       }
       router.replace('/dashboard');
     } catch (error) {
+      console.log(error)
       toast.error('ログインに失敗しました');
     }
   };

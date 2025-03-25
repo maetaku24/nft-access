@@ -2,12 +2,12 @@ import { z } from 'zod';
 import { Standard, Network } from '@prisma/client';
 
 const standardEnum = z.nativeEnum(Standard, {
-  errorMap: (issue, ctx) => {
+  errorMap: () => {
     return { message: '規格を選択してください' };
   },
 });
 const networkEnum = z.nativeEnum(Network, {
-  errorMap: (issue, ctx) => {
+  errorMap: () => {
     return { message: 'ネットワークを選択してください' };
   },
 });

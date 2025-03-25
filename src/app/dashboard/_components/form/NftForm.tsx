@@ -23,14 +23,16 @@ export const NftForm = ({ control }: Props) => {
     name: 'nfts',
   });
 
+  const watchedStandardValues = useWatch({
+    control,
+    name: 'nfts',
+  });
+
   return (
     <div>
       <h2 className='text-2xl font-bold mb-10'>NFT情報設定</h2>
       {fields.map((field, index) => {
-        const standardValue = useWatch({
-          control,
-          name: `nfts.${index}.standard`,
-        });
+        const standardValue = watchedStandardValues?.[index]?.standard;
 
         return (
           <div key={field.id} className='space-y-6 max-w-2xl'>
