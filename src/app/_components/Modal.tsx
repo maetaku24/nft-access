@@ -18,8 +18,8 @@ export const Modal: FC<Props> = ({ isOpen, onClose, children }) => {
       contentLabel='Modal'
       closeTimeoutMS={300}
       ariaHideApp={false}
-      className={`relative z-[99] h-screen w-screen bg-black/80`}
-      overlayClassName='fixed inset-0 bg-black_main bg-opacity-60 flex items-center justify-center z-[99]'
+      className='relative bg-white p-6 rounded max-w-lg w-full mx-auto outline-none'
+      overlayClassName='fixed inset-0 bg-black_main bg-black/80 flex items-center justify-center z-[99]'
     >
       <div
         className='flex size-full items-center justify-center'
