@@ -65,8 +65,7 @@ export const POST = async (request: NextRequest) => {
         }),
         await prisma.schedule.createManyAndReturn({
           data: schedules.map((schedule) => ({
-            type: schedule.type,
-            weekday: schedule.weekday ?? null,
+            weekday: schedule.weekday,
             date: schedule.date ? dayjs(schedule.date).toDate() : null,
             startTime: schedule.startTime,
             endTime: schedule.endTime,

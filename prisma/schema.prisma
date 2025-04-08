@@ -92,8 +92,7 @@ model EventSchedule {
 // Scheduleテーブル
 model Schedule {
   id              Int      @id @default(autoincrement())
-  type            Type  
-  weekday         String?
+  weekday         String
   date            DateTime?
   startTime       String
   endTime         String
@@ -102,12 +101,6 @@ model Schedule {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   eventSchedules  EventSchedule[]
-}
-
-// 週間か日程
-enum Type {
-  WEEKDAY
-  DATE
 }
 
 // Reservationテーブル
