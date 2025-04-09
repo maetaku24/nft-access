@@ -17,3 +17,5 @@ export const scheduleSchema = z
     message: '終了時間は開始時間より後の時間を入力してください',
     path: ['endTime'],
   });
+
+export type Schedule = z.infer<typeof scheduleSchema>;
