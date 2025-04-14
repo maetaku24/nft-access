@@ -15,7 +15,7 @@ export const ScheduleForm = ({ control }: Props) => {
       <h2 className='text-2xl font-bold mb-10'>日程・参加メンバー設定</h2>
       <div className='space-y-6 max-w-4xl'>
         <WeekTimePicker control={control} />
-        <FormCalendar control={control} />
+        <FormCalendar />
       </div>
     </div>
   );
