@@ -7,7 +7,7 @@ const apiRequest = async <ResponseData>({
   token,
   headers,
 }: ApiRequestOptions): Promise<ResponseData> => {
-  const res = await fetch(`/api/${path}`, {
+  const res = await fetch(`${path}`, {
     method,
     headers: {
       'Content-Type': 'application/json',
