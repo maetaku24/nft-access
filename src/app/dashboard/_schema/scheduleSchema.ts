@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const scheduleSchema = z
   .object({
     weekday: z.string(),
-    date: z.date().optional().nullable(),
+    date: z.date().optional(),
     startTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/, {
       message: '入力してください',
     }),
@@ -19,3 +19,9 @@ export const scheduleSchema = z
   });
 
 export type Schedule = z.infer<typeof scheduleSchema>;
+
+export const scheduleFormSchema = z.object({
+  schedules: scheduleSchema.array(),
+});
+
+export type ScheduleForm = z.infer<typeof scheduleFormSchema>;
