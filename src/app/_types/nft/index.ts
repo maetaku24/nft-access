@@ -5,7 +5,7 @@ export interface Nft {
   standard: Standard;
   network: Network;
   contractAddress: string;
-  tokenId?: number;
+  tokenId?: number | null;
   minBalance: number;
   maxBalance: number;
 }
