@@ -46,7 +46,7 @@ export const useSignupForm = () => {
       const res = await postRequest<
         CreateProfileRequest,
         CreateProfileResponse
-      >('profile', body);
+      >('/api/profile', body);
 
       console.log('プロファイル作成成功:', res);
 
