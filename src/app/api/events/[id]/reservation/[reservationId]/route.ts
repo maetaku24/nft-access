@@ -6,6 +6,7 @@ import {
   UpdateReservationRequest,
   UpdateReservationResponse,
 } from '@/app/_types/reservation/UpdateReservation';
+import { ReservationIndexResponse } from '@/app/_types/reservation';
 
 // NFT認証確認必要
 export const GET = async (
@@ -29,7 +30,9 @@ export const GET = async (
         { status: 404 }
       );
     }
-    return NextResponse.json({ reservation }, { status: 200 });
+    return NextResponse.json<ReservationIndexResponse>(
+      { status: 200, data: reservation },
+    );
   } catch (error) {
     return handleError(error);
   }
