@@ -35,7 +35,7 @@ export const NftForm = ({ control }: Props) => {
         const standardValue = watchedStandardValues?.[index]?.standard;
 
         return (
-          <div key={field.id} className='space-y-6 max-w-2xl'>
+          <div key={field.id} className='space-y-6'>
             <FormInput
               control={control}
               name={`nfts.${index}.collectionName`}
