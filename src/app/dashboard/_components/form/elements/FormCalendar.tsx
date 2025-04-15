@@ -23,7 +23,7 @@ import { DayCellContent } from './DayCellContent';
 
 export const FormCalendar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDay, setSelectedDay] = useState<string>();
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedWeekday, setSelectedWeekday] = useState<WeekDay>();
 
   const { getValues } = useFormContext<Event>();
@@ -68,7 +68,7 @@ export const FormCalendar: React.FC = () => {
         />
         <ScheduleModal
           weekday={selectedWeekday}
-          date={selectedDay}
+          date={selectedDay ?? undefined}
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
         />
