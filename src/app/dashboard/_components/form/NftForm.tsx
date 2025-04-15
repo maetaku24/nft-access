@@ -17,7 +17,7 @@ interface Props {
   control: Control<Event>;
 }
 
-export const NftForm = ({ control }: Props) => {
+export const NftForm: React.FC<Props> = ({ control }) => {
   const { fields } = useFieldArray({
     control,
     name: 'nfts',
