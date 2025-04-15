@@ -49,7 +49,7 @@ export const WeekTimePicker: React.FC<Props> = ({ control }) => {
 
   return (
     <div>
-      <FormLabel className='text-base'>日程候補として提示する曜日と時間帯</FormLabel>
+      <FormLabel>日程候補として提示する曜日と時間帯</FormLabel>
       <div className='flex mt-2 max-w-4xl'>
         {groupedDays.map(({ weekday, items }) => {
           const isClosed = items.some((item) => item.isClosed);

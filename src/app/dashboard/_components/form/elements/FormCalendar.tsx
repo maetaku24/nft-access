@@ -95,7 +95,7 @@ export const FormCalendar: React.FC = () => {
 
   return (
     <div>
-      <FormLabel className='text-base'>個別の時間帯を設定</FormLabel>
+      <FormLabel>個別の時間帯を設定</FormLabel>
       <div className='mt-2 p-6 rounded-md border bg-white'>
         <FullCalendar
           locale={jaLocale}

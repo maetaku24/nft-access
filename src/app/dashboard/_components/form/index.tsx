@@ -15,8 +15,7 @@ import { ScheduleForm } from './ScheduleForm';
 // 型
 import { WEEKDAYS } from '@/app/_types/schedule/week';
 import { EventSchema } from '../../_schema/eventSchema';
-import type { Event} from '../../_schema/eventSchema';
-
+import type { Event } from '../../_schema/eventSchema';
 
 interface Props {
   onSubmit: (data: Event) => void;
@@ -43,23 +42,24 @@ export const EventForm: React.FC<Props> = ({ onSubmit, defaultValues }) => {
 
   return (
     <Form {...methods}>
-      <div className='min-h-screen flex items-start justify-center pt-28'>
+      <div className='min-h-screen flex items-start justify-center pt-20'>
         <div className='w-full max-w-4xl'>
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className='space-y-20'>
               <BasicForm control={methods.control} />
               <NftForm control={methods.control} />
               <ScheduleForm control={methods.control} />
             </div>
-            <Button
-              type='submit'
-              size='lg'
-              disabled={methods.formState.isSubmitting}
-              className='flex justify-center items-center my-16 bg-green-300 hover:bg-green-300/50'
-            >
-              {methods.formState.isSubmitting ? '作成中...' : '作成する'}
-            </Button>
+            <div  className="flex justify-center my-16">
+              <Button
+                type='submit'
+                size='lg'
+                disabled={methods.formState.isSubmitting}
+                className='w-[500px] bg-green-300 hover:bg-green-300/50'
+              >
+                {methods.formState.isSubmitting ? '作成中...' : '作成する'}
+              </Button>
+            </div>
           </form>
         </div>
       </div>
