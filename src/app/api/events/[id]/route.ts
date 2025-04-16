@@ -1,10 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/utils/prisma';
+import dayjs from 'dayjs';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../../_utils/getCurrentUser';
-import {
+import type {
   UpdateEventRequest,
   UpdateEventResponse,
 } from '@/app/_types/event/UpdateEvent';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 export const GET = async (
   request: NextRequest,
@@ -39,7 +42,6 @@ export const GET = async (
           include: {
             schedule: {
               select: {
-                type: true,
                 weekday: true,
                 date: true,
                 startTime: true,
@@ -62,9 +64,7 @@ export const GET = async (
 
     return NextResponse.json({ eventDetail });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };
 
@@ -129,9 +129,8 @@ export const PUT = async (
         }),
         await prisma.schedule.createManyAndReturn({
           data: schedules.map((schedule) => ({
-            type: schedule.type,
-            weekday: schedule.weekday ?? null,
-            date: schedule.date ? new Date(schedule.date) : null,
+            weekday: schedule.weekday,
+            date: schedule.date ? dayjs(schedule.date).toDate() : null,
             startTime: schedule.startTime,
             endTime: schedule.endTime,
             maxParticipants: schedule.maxParticipants,
@@ -166,9 +165,7 @@ export const PUT = async (
       id: updateEvent,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };
 
@@ -215,8 +212,6 @@ export const DELETE = async (
       { status: 200 }
     );
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };

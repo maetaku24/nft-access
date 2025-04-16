@@ -1,9 +1,11 @@
-import { useRouter } from 'next/navigation';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import type { LoginForm } from '../_schema/loginSchema';
+import { loginSchema } from '../_schema/loginSchema';
 import { supabase } from '@/utils/supabase';
-import { LoginForm, loginSchema } from '../_schema/loginSchema';
 
 export const useLoginForm = () => {
   const router = useRouter();
@@ -30,6 +32,7 @@ export const useLoginForm = () => {
       }
       router.replace('/dashboard');
     } catch (error) {
+      console.log(error);
       toast.error('ログインに失敗しました');
     }
   };

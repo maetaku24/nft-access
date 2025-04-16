@@ -1,6 +1,6 @@
-import { supabase } from '@/utils/supabase';
-import { Session } from '@supabase/supabase-js';
+import type { Session } from '@supabase/supabase-js';
 import { useState, useEffect } from 'react';
+import { supabase } from '@/utils/supabase';
 
 export const useSupabaseSession = () => {
   // undefind: ログイン状態ロード中, null: ログインしていない, Session: ログインしている

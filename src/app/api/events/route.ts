@@ -1,10 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/utils/prisma';
+import dayjs from 'dayjs';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../_utils/getCurrentUser';
-import {
+import type {
   CreateEventRequest,
   CreateEventResponse,
 } from '@/app/_types/event/CreateEvent';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 export const GET = async (request: NextRequest) => {
   try {
@@ -26,9 +29,7 @@ export const GET = async (request: NextRequest) => {
 
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };
 
@@ -65,9 +66,8 @@ export const POST = async (request: NextRequest) => {
         }),
         await prisma.schedule.createManyAndReturn({
           data: schedules.map((schedule) => ({
-            type: schedule.type,
-            weekday: schedule.weekday ?? null,
-            date: schedule.date ? new Date(schedule.date) : null,
+            weekday: schedule.weekday,
+            date: schedule.date ? dayjs(schedule.date).toDate() : null,
             startTime: schedule.startTime,
             endTime: schedule.endTime,
             maxParticipants: schedule.maxParticipants,
@@ -102,8 +102,6 @@ export const POST = async (request: NextRequest) => {
       id: eventCreate,
     });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: error.message }, { status: 400 });
-    }
+    return handleError(error);
   }
 };

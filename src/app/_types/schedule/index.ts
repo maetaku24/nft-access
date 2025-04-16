@@ -1,8 +1,5 @@
-import { Type } from '@prisma/client';
-
 export interface Schedule {
-  type: Type;
-  weekday?: string;
+  weekday: string;
   date?: Date;
   startTime: string;
   endTime: string;

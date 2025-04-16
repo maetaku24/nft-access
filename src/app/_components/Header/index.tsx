@@ -1,34 +1,50 @@
 'use client';
 
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
-import { supabase } from '@/utils/supabase';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import React from 'react';
-import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useMemo } from 'react';
 import Button from '../Button';
-import Avatar from './avatar';
+import Logo from './Logo';
+import UserMenu from './UserMenu';
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 
 export const Header: React.FC = () => {
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/');
-  };
-
   const { session, isLoding } = useSupabaseSession();
+  const pathname = usePathname();
+
+  const logoUrl = useMemo(() => (session ? '/dashboard' : '/'), [session]);
+
+  if (pathname === '/signup' || pathname === '/login') {
+    return (
+      <header
+        className='fixed inset-x-0 top-0 z-50 flex items-center justify-between 
+                      bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'
+      >
+        <Link
+          href={logoUrl}
+          className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
+        >
+          <Logo />
+        </Link>
+        <Link href={pathname === '/signup' ? '/login' : '/signup'}>
+          <Button type='button' variant='primary'>
+            {pathname === '/signup' ? 'ログイン' : '新規登録'}
+          </Button>
+        </Link>
+      </header>
+    );
+  }
 
   return (
-    <header className='flex justify-between items-center  px-11 py-[13px] bg-green-100'>
-      <Link href='/' className='w-[275px] h-[50px]'>
-        <Image
-          src='/logo.svg'
-          alt='App Logo'
-          width={275}
-          height={50}
-          priority
-        />
+    <header
+      className='fixed inset-x-0 top-0 z-50 flex items-center justify-between 
+                      bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'
+    >
+      <Link
+        href={logoUrl}
+        className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
+      >
+        <Logo />
       </Link>
       {!isLoding && (
         <div className='flex items-center gap-4'>
@@ -39,10 +55,7 @@ export const Header: React.FC = () => {
                   新規イベント作成
                 </Button>
               </Link>
-              <Button type='button' variant='primary' onClick={handleLogout}>
-                ログアウト
-              </Button>
-              <Avatar />
+              <UserMenu />
             </>
           ) : (
             <>

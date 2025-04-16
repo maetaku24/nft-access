@@ -1,18 +1,20 @@
+import type { ComponentPropsWithRef, ReactNode } from 'react';
+import { forwardRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
-import { ComponentPropsWithRef, forwardRef, ReactNode } from 'react';
 
 // tv を使用して Tailwind CSS のスタイルを定義
 const buttonStyles = tv({
-  base: 'flex items-center justify-center rounded-lg font-bold px-5 py-2.5 me-2 mb-2 transition-colors',
+  base: 'mb-2 me-2 flex items-center justify-center rounded-lg px-5 py-2.5 font-bold transition-colors',
   variants: {
     variant: {
-      primary: 'text-white hover:text-green-300 border-2 border-green-300 bg-green-300 hover:bg-transparent focus:ring focus:outline-none focus:ring-green-200',
+      primary:
+        'border-2 border-green-300 bg-green-300 text-white hover:bg-transparent hover:text-green-300 focus:outline-none focus:ring focus:ring-green-200',
       secondary:
-        'text-gray-900 bg-green-200 border-2 border-gray-900 hover:bg-green-200/50',
+        'border-2 border-gray-900 bg-green-200 text-gray-900 hover:bg-green-200/50',
       outline:
-        'text-green-300 hover:text-white border-2 border-green-300 hover:bg-green-300 focus:ring focus:outline-none focus:ring-green-200',
+        'border-2 border-green-300 text-green-300 hover:bg-green-300 hover:text-white focus:outline-none focus:ring focus:ring-green-200',
       delete:
-        'text-red-500 bg-transparent border-2 border-red-500 hover:bg-red-100',
+        'border-2 border-red-500 bg-transparent text-red-500 hover:bg-red-100',
     },
     size: {
       sm: 'text-sm',
@@ -25,7 +27,7 @@ const buttonStyles = tv({
       slim: 'px-3 py-1',
     },
     disabled: {
-      true: 'opacity-50 cursor-not-allowed pointer-events-none',
+      true: 'pointer-events-none cursor-not-allowed opacity-50',
     },
   },
   defaultVariants: {

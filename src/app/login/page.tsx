@@ -1,9 +1,9 @@
 'use client';
 
-import { useLoginForm } from './_hooks/useLoginForm';
-import TextInput from '../_components/TextInput';
-import Button from '../_components/Button';
 import Link from 'next/link';
+import Button from '../_components/Button';
+import TextInput from '../_components/TextInput';
+import { useLoginForm } from './_hooks/useLoginForm';
 
 export default function LoginPage() {
   const {
@@ -16,9 +16,9 @@ export default function LoginPage() {
   } = useLoginForm();
 
   return (
-    <div className='min-h-screen flex items-start justify-center pt-28 bg-gray-100'>
+    <div className='flex min-h-screen items-start justify-center bg-gray-100 pt-28'>
       <div className='w-full max-w-lg'>
-        <h1 className='text-center text-[32px] font-bold text-gray-900 mb-20'>
+        <h1 className='mb-20 text-center text-[32px] font-bold text-gray-900'>
           ログイン
         </h1>
         <form onSubmit={handleSubmit(login)}>
@@ -53,7 +53,7 @@ export default function LoginPage() {
           >
             {isSubmitting ? '送信中...' : 'ログイン'}
           </Button>
-          <p className='text-xs text-gray-500 font-medium mt-6'>
+          <p className='mt-6 text-xs font-medium text-gray-500'>
             <Link href='/signup' className='underline'>
               アカウントをお持ちでない場合はこちらから新規登録してください。
             </Link>
