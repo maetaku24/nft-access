@@ -1,9 +1,9 @@
 'use client';
 
-import { Control } from 'react-hook-form';
-import { Event } from '@/app/dashboard/_schema/eventSchema';
-import { WeekTimePicker } from './elements/WeekTimePicker';
+import type { Control } from 'react-hook-form';
 import { FormCalendar } from './elements/FormCalendar';
+import { WeekTimePicker } from './elements/WeekTimePicker';
+import type { Event } from '@/app/dashboard/_schema/eventSchema';
 
 interface Props {
   control: Control<Event>;
@@ -12,8 +12,8 @@ interface Props {
 export const ScheduleForm = ({ control }: Props) => {
   return (
     <div>
-      <h2 className='text-2xl font-bold mb-10'>日程・参加メンバー設定</h2>
-      <div className='space-y-6 max-w-4xl'>
+      <h2 className='mb-10 text-2xl font-bold'>日程・参加メンバー設定</h2>
+      <div className='max-w-4xl space-y-6'>
         <WeekTimePicker control={control} />
         <FormCalendar />
       </div>

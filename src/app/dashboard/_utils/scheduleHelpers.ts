@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
 
 // 型・バリデーション
+import type { Event } from '../_schema/eventSchema';
 import { WEEKDAYS } from '@/app/_types/schedule/week';
 import type { WeekDay } from '@/app/_types/schedule/week';
-import type { Event } from '../_schema/eventSchema';
 
 type Schedule = Event['schedules'][number];
 
@@ -39,7 +39,6 @@ export const getInitialValue = (
     isTargetSchedule(schedule, weekday, date)
   );
   if (dateRows.length > 0) return dateRows;
-
 
   const templates = all.filter(
     (schedule) => isTargetSchedule(schedule, weekday) && !schedule.date

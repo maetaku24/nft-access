@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Control } from 'react-hook-form';
-import { Input } from '@/app/_components/ui/input';
+import type { Control } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -10,11 +9,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/app/_components/ui/form';
+import { Input } from '@/app/_components/ui/input';
 import {
   ToggleGroup,
   ToggleGroupItem,
 } from '@/app/_components/ui/toggle-group';
-import { Event } from '@/app/dashboard/_schema/eventSchema';
+import type { Event } from '@/app/dashboard/_schema/eventSchema';
 
 interface Props {
   control: Control<Event>;
@@ -48,31 +48,31 @@ export const DurationPicker = ({ control }: Props) => {
             >
               <ToggleGroupItem
                 value='30'
-                className='w-full h-12 flex justify-center items-center bg-white first:rounded-l-md border-r-0'
+                className='flex h-12 w-full items-center justify-center border-r-0 bg-white first:rounded-l-md'
               >
                 30分
               </ToggleGroupItem>
               <ToggleGroupItem
                 value='45'
-                className='w-full h-12 flex justify-center items-center bg-white border-r-0'
+                className='flex h-12 w-full items-center justify-center border-r-0 bg-white'
               >
                 45分
               </ToggleGroupItem>
               <ToggleGroupItem
                 value='60'
-                className='w-full h-12 flex justify-center items-center bg-white border-r-0'
+                className='flex h-12 w-full items-center justify-center border-r-0 bg-white'
               >
                 60分
               </ToggleGroupItem>
               <ToggleGroupItem
                 value='90'
-                className='w-full h-12 flex justify-center items-center bg-white border-r-0'
+                className='flex h-12 w-full items-center justify-center border-r-0 bg-white'
               >
                 90分
               </ToggleGroupItem>
               <ToggleGroupItem
                 value='custom'
-                className='w-full h-12 flex items-center justify-center bg-white last:rounded-r-md'
+                className='flex h-12 w-full items-center justify-center bg-white last:rounded-r-md'
               >
                 {
                   <FormControl>
@@ -89,7 +89,7 @@ export const DurationPicker = ({ control }: Props) => {
                           field.onChange('');
                         setIsCustom(true);
                       }}
-                      className='w-full min-w-0 border text-sm pl-2 pr-2 bg-white text-gray-900 text-center placeholder:text-xs'
+                      className='w-full min-w-0 border bg-white px-2 text-center text-sm text-gray-900 placeholder:text-xs'
                     />
                   </FormControl>
                 }

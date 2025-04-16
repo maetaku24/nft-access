@@ -1,5 +1,5 @@
 import React from 'react';
-import { FieldValues, UseControllerProps } from 'react-hook-form';
+import type { FieldValues, UseControllerProps } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -7,7 +7,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/app/_components/ui/form';
-import { Input, InputProps } from '@/app/_components/ui/input';
+import type { InputProps } from '@/app/_components/ui/input';
+import { Input } from '@/app/_components/ui/input';
 
 export type FormInputProps<T extends FieldValues> = InputProps &
   UseControllerProps<T> & {
@@ -26,9 +27,7 @@ export function FormInput<S extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>
-            {label}
-          </FormLabel>
+          <FormLabel>{label}</FormLabel>
           <FormControl>
             <Input
               {...inputProps}
@@ -38,7 +37,7 @@ export function FormInput<S extends FieldValues>({
               disabled={field.disabled}
               name={field.name}
               ref={field.ref}
-              className='bg-white border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500'
+              className='rounded-lg border border-gray-300 bg-white text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500'
             />
           </FormControl>
           <FormMessage className='text-xs' />

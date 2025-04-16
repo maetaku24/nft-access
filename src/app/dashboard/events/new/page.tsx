@@ -1,24 +1,18 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession'
-
-// 外部ライブラリ
 import { toast } from 'react-toastify';
-
-// UIコンポーネント
 import { EventForm } from '../../_components/form';
-
-// 型・ユーティリティ
-import { postRequest } from '@/app/_utils/api';
-import {
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
+import type {
   CreateEventRequest,
   CreateEventResponse,
 } from '@/app/_types/event/CreateEvent';
+import { postRequest } from '@/app/_utils/api';
 
 export default function NewEventPage() {
   const router = useRouter();
-  const { token } = useSupabaseSession()
+  const { token } = useSupabaseSession();
 
   const handleSubmit = async (data: CreateEventRequest) => {
     try {
@@ -26,7 +20,7 @@ export default function NewEventPage() {
         '/api/events',
         data,
         token ?? undefined
-      ); 
+      );
       console.log('イベント作成成功:', res);
       router.replace('/dashboard');
       toast.info('イベントが登録できました。');
@@ -37,7 +31,9 @@ export default function NewEventPage() {
   };
   return (
     <div>
-      <h1 className='flex justify-center items-start text-4xl font-bold mt-40'>新規イベント登録</h1>
+      <h1 className='mt-40 flex items-start justify-center text-4xl font-bold'>
+        新規イベント登録
+      </h1>
       <EventForm onSubmit={handleSubmit} />
     </div>
   );

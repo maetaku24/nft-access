@@ -1,12 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
 import dayjs from 'dayjs';
-import { prisma } from '@/utils/prisma';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../_utils/getCurrentUser';
-import { handleError } from '@/app/api/_utils/handleError';
-import {
+import type {
   CreateEventRequest,
   CreateEventResponse,
 } from '@/app/_types/event/CreateEvent';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 export const GET = async (request: NextRequest) => {
   try {

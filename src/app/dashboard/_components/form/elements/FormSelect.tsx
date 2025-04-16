@@ -1,12 +1,5 @@
 import React from 'react';
-import { FieldValues, UseControllerProps } from 'react-hook-form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/app/_components/ui/select';
+import type { FieldValues, UseControllerProps } from 'react-hook-form';
 import {
   FormControl,
   FormField,
@@ -14,6 +7,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/app/_components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/app/_components/ui/select';
 
 export interface FormSelectProps<T extends FieldValues>
   extends UseControllerProps<T> {
@@ -46,7 +46,11 @@ export function FormSelect<S extends FieldValues>({
                 value={field.value}
                 onValueChange={(value) => field.onChange(value)}
               >
-                <SelectTrigger id={name} onBlur={() => field.onBlur()} className='bg-white'>
+                <SelectTrigger
+                  id={name}
+                  onBlur={() => field.onBlur()}
+                  className='bg-white'
+                >
                   <SelectValue placeholder={placeholder || '選択してください'}>
                     {selectedOption ? selectedOption.label : ''}
                   </SelectValue>

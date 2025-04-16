@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { Standard, Network } from '@prisma/client';
+import { z } from 'zod';
 
 const standardEnum = z.nativeEnum(Standard, {
   errorMap: () => {

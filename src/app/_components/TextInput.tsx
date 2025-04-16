@@ -1,25 +1,26 @@
+import type { ComponentPropsWithRef } from 'react';
+import { forwardRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
-import { ComponentPropsWithRef, forwardRef } from 'react';
-import { Label } from './ui/label';
 import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 // tv を使用して Tailwind CSS のスタイルを定義
 const textInputStyles = tv({
   slots: {
-    labelStyle: 'block mb-2 text-base font-medium text-gray-900',
+    labelStyle: 'mb-2 block text-base font-medium text-gray-900',
     inputStyle:
-      'bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
-    errorStyle: 'mt-2 text-sm text-red-600 font-medium',
+      'block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500',
+    errorStyle: 'mt-2 text-sm font-medium text-red-600',
   },
   variants: {
     disabled: {
-      true: 'bg-gray-100 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed',
+      true: 'block w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 p-2.5 text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500',
     },
     error: {
       true: {
-        labelStyle: 'block mb-2 text-base font-medium text-red-700',
+        labelStyle: 'mb-2 block text-base font-medium text-red-700',
         inputStyle:
-          'bg-red-50 border border-red-500 text-red-900 placeholder-red-700 text-base rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5',
+          'block w-full rounded-lg border border-red-500 bg-red-50 p-2.5 text-base text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500',
       },
     },
   },
@@ -54,17 +55,11 @@ const TextInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
       <Input
         id={id}
         ref={ref}
-        className={inputStyle() + (className ? `${className} `: '')}
+        className={inputStyle() + (className ? `${className} ` : '')}
         disabled={disabled}
         {...rest}
       />
-      {errorMessage && (
-        <p
-          className={errorStyle()}
-        >
-          {errorMessage}
-        </p>
-      )}
+      {errorMessage && <p className={errorStyle()}>{errorMessage}</p>}
     </div>
   );
 });

@@ -1,4 +1,4 @@
-import { ApiRequestOptions } from '../_types/ApiRequest';
+import type { ApiRequestOptions } from '../_types/ApiRequest';
 
 const apiRequest = async <ResponseData>({
   path,
@@ -28,11 +28,17 @@ const apiRequest = async <ResponseData>({
 export const getRequest = <ResponseData>(path: string, token?: string) =>
   apiRequest<ResponseData>({ path, method: 'GET', token });
 
-export const postRequest = <RequestData, ResponseData>(path: string, body: RequestData, token?: string) =>
-  apiRequest<ResponseData>({ path, method: 'POST', body, token });
+export const postRequest = <RequestData, ResponseData>(
+  path: string,
+  body: RequestData,
+  token?: string
+) => apiRequest<ResponseData>({ path, method: 'POST', body, token });
 
-export const putRequest = <RequestData, ResponseData>(path: string, body: RequestData, token?: string) =>
-  apiRequest<ResponseData>({ path, method: 'PUT', body, token });
+export const putRequest = <RequestData, ResponseData>(
+  path: string,
+  body: RequestData,
+  token?: string
+) => apiRequest<ResponseData>({ path, method: 'PUT', body, token });
 
 export const deleteRequest = <ResponseData>(path: string, token?: string) =>
   apiRequest<ResponseData>({ path, method: 'DELETE', token });

@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/utils/prisma';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../../_utils/getCurrentUser';
-import { handleError } from '@/app/api/_utils/handleError';
-import {
+import type {
   UpdateProfileRequest,
   UpdateProfileResponse,
 } from '@/app/_types/profile/UpdateProfile';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 export const PUT = async (
   request: NextRequest,
@@ -20,7 +21,7 @@ export const PUT = async (
     const updateProfile = await prisma.profile.update({
       where: {
         id: parseInt(id),
-        supabaseUserId: profile.supabaseUserId
+        supabaseUserId: profile.supabaseUserId,
       },
       data: {
         name: name,

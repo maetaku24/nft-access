@@ -1,21 +1,15 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-
-// 外部ライブラリ
 import { zodResolver } from '@hookform/resolvers/zod';
-
-// UIコンポーネント
-import { Button } from '@/app/_components/ui/button';
-import { Form } from '@/app/_components/ui/form';
+import { useForm } from 'react-hook-form';
+import { EventSchema } from '../../_schema/eventSchema';
+import type { Event } from '../../_schema/eventSchema';
 import { BasicForm } from './BasicForm';
 import { NftForm } from './NftForm';
 import { ScheduleForm } from './ScheduleForm';
-
-// 型
+import { Button } from '@/app/_components/ui/button';
+import { Form } from '@/app/_components/ui/form';
 import { WEEKDAYS } from '@/app/_types/schedule/week';
-import { EventSchema } from '../../_schema/eventSchema';
-import type { Event } from '../../_schema/eventSchema';
 
 interface Props {
   onSubmit: (data: Event) => void;
@@ -42,7 +36,7 @@ export const EventForm: React.FC<Props> = ({ onSubmit, defaultValues }) => {
 
   return (
     <Form {...methods}>
-      <div className='min-h-screen flex items-start justify-center pt-20'>
+      <div className='flex min-h-screen items-start justify-center pt-20'>
         <div className='w-full max-w-4xl'>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className='space-y-20'>
@@ -50,7 +44,7 @@ export const EventForm: React.FC<Props> = ({ onSubmit, defaultValues }) => {
               <NftForm control={methods.control} />
               <ScheduleForm control={methods.control} />
             </div>
-            <div  className="flex justify-center my-16">
+            <div className='my-16 flex justify-center'>
               <Button
                 type='submit'
                 size='lg'

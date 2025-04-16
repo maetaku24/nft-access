@@ -1,16 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import { Control, useWatch } from 'react-hook-form';
-
-// UIコンポーネント・アイコン
 import { Settings } from 'lucide-react';
-import { FormLabel } from '@/app/_components/ui/form';
-
-// アプリコンポーネント
+import { useMemo, useState } from 'react';
+import type { Control } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { ScheduleModal } from './ScheduleModal';
-
-// 型
+import { FormLabel } from '@/app/_components/ui/form';
 import type { WeekDay } from '@/app/_types/schedule/week';
 import type { Event } from '@/app/dashboard/_schema/eventSchema';
 
@@ -34,11 +29,14 @@ export const WeekTimePicker: React.FC<Props> = ({ control }) => {
 
   // 同じ曜日ごとにグループ化する
   const grouped = useMemo(() => {
-    return schedules.reduce((acc, item) => {
-      if (!item.weekday || item.date) return acc;
-      (acc[item.weekday as WeekDay] ??= []).push(item);
-      return acc;
-    }, {} as Record<WeekDay, (typeof schedules)[number][]>);
+    return schedules.reduce(
+      (acc, item) => {
+        if (!item.weekday || item.date) return acc;
+        (acc[item.weekday as WeekDay] ??= []).push(item);
+        return acc;
+      },
+      {} as Record<WeekDay, (typeof schedules)[number][]>
+    );
   }, [schedules]);
 
   // grouped を配列に変換
@@ -50,7 +48,7 @@ export const WeekTimePicker: React.FC<Props> = ({ control }) => {
   return (
     <div>
       <FormLabel>日程候補として提示する曜日と時間帯</FormLabel>
-      <div className='flex mt-2 max-w-4xl'>
+      <div className='mt-2 flex max-w-4xl'>
         {groupedDays.map(({ weekday, items }) => {
           const isClosed = items.some((item) => item.isClosed);
           return (
@@ -60,15 +58,15 @@ export const WeekTimePicker: React.FC<Props> = ({ control }) => {
               onClick={() => handleSelect(weekday as WeekDay)}
               className={
                 isClosed
-                  ? 'border p-4 w-36 text-gray-900 text-center bg-gray-200 first:rounded-l-md last:rounded-r-md hover:border-green-300'
-                  : 'border p-4 w-36 text-gray-900 text-center bg-white first:rounded-l-md last:rounded-r-md hover:border-green-300'
+                  ? 'w-36 border bg-gray-200 p-4 text-center text-gray-900 first:rounded-l-md last:rounded-r-md hover:border-green-300'
+                  : 'w-36 border bg-white p-4 text-center text-gray-900 first:rounded-l-md last:rounded-r-md hover:border-green-300'
               }
             >
-              <div className='relative font-semibold flex items-center justify-center'>
+              <div className='relative flex items-center justify-center font-semibold'>
                 <span className='mx-auto text-gray-900'>{weekday}</span>
                 <Settings
                   size={16}
-                  className='absolute text-gray-900 right-0 top-0'
+                  className='absolute right-0 top-0 text-gray-900'
                 />
               </div>
               <div className='text-sm'>

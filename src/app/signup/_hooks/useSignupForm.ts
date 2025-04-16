@@ -1,17 +1,18 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { supabase } from '@/utils/supabase';
-import { postRequest } from '@/app/_utils/api';
-import { appBaseUrl } from '@/config/app-config';
-import { SignupForm, signupSchema } from '../_schema/signupSchema';
-import {
+import type { SignupForm } from '../_schema/signupSchema';
+import { signupSchema } from '../_schema/signupSchema';
+import type {
   CreateProfileRequest,
   CreateProfileResponse,
 } from '@/app/_types/profile/CreateProfile';
+import { postRequest } from '@/app/_utils/api';
+import { appBaseUrl } from '@/config/app-config';
+import { supabase } from '@/utils/supabase';
 
 export const useSignupForm = () => {
-
   const { register, handleSubmit, formState, reset } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
@@ -53,7 +54,7 @@ export const useSignupForm = () => {
       toast.info('確認メールを送信しました。');
       reset();
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.error('ユーザー登録に失敗しました。');
     }
   };

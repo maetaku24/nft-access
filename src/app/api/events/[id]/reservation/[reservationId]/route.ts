@@ -1,12 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
 import dayjs from 'dayjs';
-import { prisma } from '@/utils/prisma';
-import { handleError } from '@/app/api/_utils/handleError';
-import {
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { ReservationIndexResponse } from '@/app/_types/reservation';
+import type {
   UpdateReservationRequest,
   UpdateReservationResponse,
 } from '@/app/_types/reservation/UpdateReservation';
-import { ReservationIndexResponse } from '@/app/_types/reservation';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 // NFT認証確認必要
 export const GET = async (
@@ -30,9 +31,10 @@ export const GET = async (
         { status: 404 }
       );
     }
-    return NextResponse.json<ReservationIndexResponse>(
-      { status: 200, data: reservation },
-    );
+    return NextResponse.json<ReservationIndexResponse>({
+      status: 200,
+      data: reservation,
+    });
   } catch (error) {
     return handleError(error);
   }

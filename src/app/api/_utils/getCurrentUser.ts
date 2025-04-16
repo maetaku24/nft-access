@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { prisma } from '@/utils/prisma';
 import { supabase } from '@/utils/supabase';
 

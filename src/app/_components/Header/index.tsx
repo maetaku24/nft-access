@@ -1,12 +1,12 @@
 'use client';
 
-import { useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
+import { useMemo } from 'react';
 import Button from '../Button';
 import Logo from './Logo';
 import UserMenu from './UserMenu';
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 
 export const Header: React.FC = () => {
   const { session, isLoding } = useSupabaseSession();
@@ -17,12 +17,12 @@ export const Header: React.FC = () => {
   if (pathname === '/signup' || pathname === '/login') {
     return (
       <header
-        className='fixed top-0 left-0 right-0 z-50 bg-green-100 shadow 
-                      px-4 sm:px-6 md:px-11 py-3 flex justify-between items-center'
+        className='fixed inset-x-0 top-0 z-50 flex items-center justify-between 
+                      bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'
       >
         <Link
           href={logoUrl}
-          className='w-[200px] sm:w-[250px] md:w-[275px] h-[40px] sm:h-[45px] md:h-[50px]'
+          className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
         >
           <Logo />
         </Link>
@@ -37,12 +37,12 @@ export const Header: React.FC = () => {
 
   return (
     <header
-      className='fixed top-0 left-0 right-0 z-50 bg-green-100 shadow 
-                      px-4 sm:px-6 md:px-11 py-3 flex justify-between items-center'
+      className='fixed inset-x-0 top-0 z-50 flex items-center justify-between 
+                      bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'
     >
       <Link
         href={logoUrl}
-        className='w-[200px] sm:w-[250px] md:w-[275px] h-[40px] sm:h-[45px] md:h-[50px]'
+        className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
       >
         <Logo />
       </Link>

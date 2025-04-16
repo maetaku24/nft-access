@@ -1,4 +1,4 @@
-import { Reservation } from '.';
+import type { Reservation } from '.';
 
 export interface CreateReservationRequest {
   reservations: Reservation[];

@@ -1,13 +1,13 @@
 'use client';
 
-import { dayjs } from '@/utils/dayjs';
+import type { DayCellContentArg } from '@fullcalendar/core';
+import type { WeekDay } from '@/app/_types/schedule/week';
+import type { Schedule } from '@/app/dashboard/_schema/scheduleSchema';
 import {
   isTargetSchedule,
   isWeekdayTemplate,
 } from '@/app/dashboard/_utils/scheduleHelpers';
-import type { WeekDay } from '@/app/_types/schedule/week';
-import type { DayCellContentArg } from '@fullcalendar/core';
-import type { Schedule } from '@/app/dashboard/_schema/scheduleSchema';
+import { dayjs } from '@/utils/dayjs';
 
 interface Props {
   arg: DayCellContentArg;
@@ -41,16 +41,16 @@ export const DayCellContent: React.FC<Props> = ({
     <div className='h-auto'>
       <div className='mt-4 text-base'>{arg.dayNumberText}</div>
       {!isClosed ? (
-        <div className='text-xs font-medium mt-1 text-center rounded px-1 min-h-[40px] overflow-hidden'>
+        <div className='mt-1 min-h-[40px] overflow-hidden rounded px-1 text-center text-xs font-medium'>
           {displaySchedules[0].startTime} 〜 {displaySchedules[0].endTime}
           {restCount > 0 && (
-            <div className='font-normal text-xs text-gray-500'>
+            <div className='text-xs font-normal text-gray-500'>
               +{restCount}件
             </div>
           )}
         </div>
       ) : (
-        <div className='text-xs font-bold text-red-500 mt-1 text-center rounded px-1 min-h-[40px] overflow-hidden'>
+        <div className='mt-1 min-h-[40px] overflow-hidden rounded px-1 text-center text-xs font-bold text-red-500'>
           受付停止中
         </div>
       )}

@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/utils/supabase';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import {
   DropdownMenu,
@@ -10,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { supabase } from '@/utils/supabase';
 
 export default function UserMenu() {
   const router = useRouter();
@@ -26,11 +26,11 @@ export default function UserMenu() {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className='p-2 -translate-x-4'>
+      <DropdownMenuContent className='-translate-x-4 p-2'>
         <DropdownMenuItem asChild className='py-2'>
           <Link href='/dashboard/settings/basic'>アカウント設定</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className='text-red-600 py-2' onClick={handleLogout}>
+        <DropdownMenuItem className='py-2 text-red-600' onClick={handleLogout}>
           ログアウト
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
 import dayjs from 'dayjs';
-import { prisma } from '@/utils/prisma';
-import { handleError } from '@/app/api/_utils/handleError';
-import {
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import type {
   CreateReservationRequest,
   CreateReservationResponse,
 } from '@/app/_types/reservation/CreateReservation';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 // NFT認証確認必要
 export const GET = async (

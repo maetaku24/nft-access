@@ -1,9 +1,9 @@
 'use client';
 
-import { useSignupForm } from '@/app/signup/_hooks/useSignupForm'
-import TextInput from '../_components/TextInput';
-import Button from '../_components/Button';
 import Link from 'next/link';
+import Button from '../_components/Button';
+import TextInput from '../_components/TextInput';
+import { useSignupForm } from '@/app/signup/_hooks/useSignupForm';
 
 export default function SiguUpPaga() {
   const {
@@ -16,9 +16,9 @@ export default function SiguUpPaga() {
   } = useSignupForm();
 
   return (
-    <div className='min-h-screen flex items-start justify-center pt-28 bg-gray-100'>
+    <div className='flex min-h-screen items-start justify-center bg-gray-100 pt-28'>
       <div className='w-full max-w-lg'>
-        <h1 className='text-center text-[32px] font-bold text-gray-900 mb-20'>
+        <h1 className='mb-20 text-center text-[32px] font-bold text-gray-900'>
           新規登録
         </h1>
         <form onSubmit={handleSubmit(signup)}>
@@ -60,7 +60,7 @@ export default function SiguUpPaga() {
           >
             {isSubmitting ? '送信中...' : '送信'}
           </Button>
-          <p className='text-xs text-gray-500 font-medium mt-6'>
+          <p className='mt-6 text-xs font-medium text-gray-500'>
             <Link href='/login' className='underline'>
               すでに登録済みの方はこちらからログインしてください。
             </Link>

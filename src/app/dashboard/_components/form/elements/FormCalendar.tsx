@@ -1,25 +1,18 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-
-// 外部ライブラリ
-import dayGridPlugin from '@fullcalendar/daygrid';
+import type { DayCellMountArg } from '@fullcalendar/core';
 import jaLocale from '@fullcalendar/core/locales/ja';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
-
-// UIコンポーネント
-import { FormLabel } from '@/app/_components/ui/form';
-
-// アプリコンポーネント
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { DayCellContent } from './DayCellContent';
 import { ScheduleModal } from './ScheduleModal';
-// 型・ユーティリティ
-import { dayjs } from '@/utils/dayjs';
+import { FormLabel } from '@/app/_components/ui/form';
 import type { WeekDay } from '@/app/_types/schedule/week';
 import type { Event } from '@/app/dashboard/_schema/eventSchema';
-import type { DayCellMountArg } from '@fullcalendar/core';
-import { DayCellContent } from './DayCellContent';
+import { dayjs } from '@/utils/dayjs';
 
 export const FormCalendar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +42,7 @@ export const FormCalendar: React.FC = () => {
   return (
     <div>
       <FormLabel>個別の時間帯を設定</FormLabel>
-      <div className='mt-2 p-6 rounded-md border bg-white'>
+      <div className='mt-2 rounded-md border bg-white p-6'>
         <FullCalendar
           locale={jaLocale}
           plugins={[dayGridPlugin, interactionPlugin]}

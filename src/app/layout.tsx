@@ -1,9 +1,9 @@
-import { Header } from './_components/Header';
 import type { Metadata } from 'next';
-import { appName } from '@/config/app-config';
 import { Noto_Sans_JP } from 'next/font/google';
+import { Header } from './_components/Header';
 import './globals.css';
 import ToastProvider from './_components/ToastProvider';
+import { appName } from '@/config/app-config';
 
 const noto = Noto_Sans_JP({ subsets: ['latin'] });
 

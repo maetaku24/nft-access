@@ -4,7 +4,7 @@ import { CreateEventCard } from './_components/card/CreateEventCard';
 export default function DashboardPage() {
   return (
     <div>
-      <div className='flex justify-center items-start mt-40'>
+      <div className='mt-40 flex items-start justify-center'>
         <CreateEventCard />
       </div>
     </div>

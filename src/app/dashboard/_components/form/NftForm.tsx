@@ -1,10 +1,9 @@
 'use client';
 
-import { Control, useFieldArray, useWatch } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { useFieldArray, useWatch } from 'react-hook-form';
 import { FormInput } from './elements/FormInput';
 import { FormSelect } from './elements/FormSelect';
-import { Event } from '@/app/dashboard/_schema/eventSchema';
-import { Input } from '@/app/_components/ui/input';
 import {
   FormControl,
   FormField,
@@ -12,6 +11,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/app/_components/ui/form';
+import { Input } from '@/app/_components/ui/input';
+import type { Event } from '@/app/dashboard/_schema/eventSchema';
 
 interface Props {
   control: Control<Event>;
@@ -30,7 +31,7 @@ export const NftForm: React.FC<Props> = ({ control }) => {
 
   return (
     <div>
-      <h2 className='text-2xl font-bold mb-10'>NFT情報設定</h2>
+      <h2 className='mb-10 text-2xl font-bold'>NFT情報設定</h2>
       {fields.map((field, index) => {
         const standardValue = watchedStandardValues?.[index]?.standard;
 
@@ -76,7 +77,7 @@ export const NftForm: React.FC<Props> = ({ control }) => {
             )}
             <FormItem>
               <FormLabel>保有条件</FormLabel>
-              <div className='flex items-center gap-2 w-full'>
+              <div className='flex w-full items-center gap-2'>
                 <FormField
                   control={control}
                   name={`nfts.${index}.minBalance`}
@@ -88,10 +89,10 @@ export const NftForm: React.FC<Props> = ({ control }) => {
                           placeholder='最小値'
                           {...field}
                           value={field.value ?? ''}
-                          className='bg-white border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500'
+                          className='rounded-lg border border-gray-300 bg-white text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500'
                         />
                       </FormControl>
-                      <FormMessage className='absolute left-0 top-full text-xs text-red-500 mt-1'>
+                      <FormMessage className='absolute left-0 top-full mt-1 text-xs text-red-500'>
                         {fieldState.error?.message}
                       </FormMessage>
                     </FormItem>
@@ -109,10 +110,10 @@ export const NftForm: React.FC<Props> = ({ control }) => {
                           placeholder='最大値'
                           {...field}
                           value={field.value ?? ''}
-                          className='bg-white border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500'
+                          className='rounded-lg border border-gray-300 bg-white text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500'
                         />
                       </FormControl>
-                      <FormMessage className='absolute left-0 top-full text-xs text-red-500 mt-1'>
+                      <FormMessage className='absolute left-0 top-full mt-1 text-xs text-red-500'>
                         {fieldState.error?.message}
                       </FormMessage>
                     </FormItem>

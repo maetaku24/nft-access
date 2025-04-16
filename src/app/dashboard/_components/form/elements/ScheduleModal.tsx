@@ -1,10 +1,8 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm, useFormContext, useFieldArray } from 'react-hook-form';
-
-// 外部ライブラリ
-import { zodResolver } from '@hookform/resolvers/zod';
-
-// UIコンポーネント
 import { Modal } from '@/app/_components/Modal';
 import { Button } from '@/app/_components/ui/button';
 import {
@@ -16,19 +14,17 @@ import {
 import { Input } from '@/app/_components/ui/input';
 import { Label } from '@/app/_components/ui/label';
 import { Switch } from '@/app/_components/ui/switch';
-
-// 型・ユーティリティ・バリデーション
 import type { WeekDay } from '@/app/_types/schedule/week';
 import type { Event } from '@/app/dashboard/_schema/eventSchema';
 import type { ScheduleForm } from '@/app/dashboard/_schema/scheduleSchema';
-import { dayjs } from '@/utils/dayjs';
+import { scheduleFormSchema } from '@/app/dashboard/_schema/scheduleSchema';
 import {
   getInitialValue,
   getFieldIndexById,
   isTargetSchedule,
   sortSchedules,
 } from '@/app/dashboard/_utils/scheduleHelpers';
-import { scheduleFormSchema } from '@/app/dashboard/_schema/scheduleSchema';
+import { dayjs } from '@/utils/dayjs';
 
 interface Props {
   weekday?: WeekDay;
@@ -122,14 +118,14 @@ export const ScheduleModal: React.FC<Props> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div onClick={(e) => e.stopPropagation}>
-        <h3 className='text-xl font-semibold mb-4'>
+        <h3 className='mb-4 text-xl font-semibold'>
           {date
             ? `${dayjs(date).format(
                 'M月D日'
               )}のスケジュール（最大${maxNum}件登録できます）`
             : `${weekday}のスケジュール（最大${maxNum}件登録できます）`}
         </h3>
-        <div className='flex items-center gap-2 mb-4'>
+        <div className='mb-4 flex items-center gap-2'>
           <Switch
             checked={isClosed}
             onCheckedChange={() => handleToggleClosed()}
@@ -144,8 +140,8 @@ export const ScheduleModal: React.FC<Props> = ({
                 <Label className='text-base font-medium'>
                   {index + 1}. 受け付ける時間
                 </Label>
-                <div className='flex justify-between items-center w-full mt-1'>
-                  <div className='flex justify-start items-center w-full gap-4'>
+                <div className='mt-1 flex w-full items-center justify-between'>
+                  <div className='flex w-full items-center justify-start gap-4'>
                     {/* 開始時間 */}
                     <FormField
                       control={modal.control}
@@ -156,11 +152,11 @@ export const ScheduleModal: React.FC<Props> = ({
                             <Input
                               type='time'
                               {...field}
-                              className='w-40 text-center rounded-sm'
+                              className='w-40 rounded-sm text-center'
                             />
                           </FormControl>
                           {fieldState.error && (
-                            <FormMessage className='absolute left-0 top-full text-xs text-red-500 mt-1'>
+                            <FormMessage className='absolute left-0 top-full mt-1 text-xs text-red-500'>
                               {fieldState.error.message}
                             </FormMessage>
                           )}
@@ -180,11 +176,11 @@ export const ScheduleModal: React.FC<Props> = ({
                             <Input
                               type='time'
                               {...field}
-                              className='w-40 flex text-center rounded-sm'
+                              className='flex w-40 rounded-sm text-center'
                             />
                           </FormControl>
                           {fieldState.error && (
-                            <FormMessage className='absolute left-0 top-full text-xs text-red-500 mt-1'>
+                            <FormMessage className='absolute left-0 top-full mt-1 text-xs text-red-500'>
                               {fieldState.error.message}
                             </FormMessage>
                           )}
@@ -199,7 +195,7 @@ export const ScheduleModal: React.FC<Props> = ({
                         variant='outline'
                         disabled={dayItems.length >= maxNum}
                         onClick={handleAddTime}
-                        className='text-lg font-bold border-2 border-green-300 text-green-300 hover:text-green-300 hover:bg-green-300/20'
+                        className='border-2 border-green-300 text-lg font-bold text-green-300 hover:bg-green-300/20 hover:text-green-300'
                       >
                         ＋
                       </Button>
@@ -210,7 +206,7 @@ export const ScheduleModal: React.FC<Props> = ({
                           variant='outline'
                           disabled={dayItems.length >= maxNum}
                           onClick={handleAddTime}
-                          className='text-lg font-bold border-2 border-green-300 text-green-300 hover:text-green-300 hover:bg-green-300/20'
+                          className='border-2 border-green-300 text-lg font-bold text-green-300 hover:bg-green-300/20 hover:text-green-300'
                         >
                           ＋
                         </Button>
@@ -218,7 +214,7 @@ export const ScheduleModal: React.FC<Props> = ({
                           size='icon'
                           variant='outline'
                           onClick={() => handleRemove(field.id)}
-                          className='text-lg font-bold border-2 border-red-500 text-red-500 hover:text-red-500 hover:bg-red-500/20'
+                          className='border-2 border-red-500 text-lg font-bold text-red-500 hover:bg-red-500/20 hover:text-red-500'
                         >
                           ー
                         </Button>
@@ -233,13 +229,13 @@ export const ScheduleModal: React.FC<Props> = ({
                   render={({ field, fieldState }) => (
                     <FormItem className='border-b pb-6 '>
                       <FormControl>
-                        <div className='flex items-end gap-1 mt-8'>
+                        <div className='mt-8 flex items-end gap-1'>
                           <span className='text-sm font-medium'>
                             この時間帯は
                           </span>
                           <Input
                             type='number'
-                            className='w-14 p-0 text-base rounded-sm text-center shadow-none'
+                            className='w-14 rounded-sm p-0 text-center text-base shadow-none'
                             {...field}
                             onChange={(e) => {
                               const val = e.target.value;
@@ -261,7 +257,7 @@ export const ScheduleModal: React.FC<Props> = ({
             );
           })}
         </div>
-        <div className='flex justify-end gap-2 mt-4 '>
+        <div className='mt-4 flex justify-end gap-2 '>
           <Button variant='outline' onClick={onClose}>
             キャンセル
           </Button>
@@ -269,7 +265,7 @@ export const ScheduleModal: React.FC<Props> = ({
             variant='outline'
             onClick={handleSave}
             disabled={!modal.formState.isValid}
-            className='border-2 border-green-300 text-green-300 hover:text-white hover:bg-green-300'
+            className='border-2 border-green-300 text-green-300 hover:bg-green-300 hover:text-white'
           >
             保存
           </Button>

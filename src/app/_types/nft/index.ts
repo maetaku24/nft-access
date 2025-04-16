@@ -1,4 +1,4 @@
-import { Standard, Network } from '@prisma/client';
+import type { Standard, Network } from '@prisma/client';
 
 export interface Nft {
   collectionName: string;

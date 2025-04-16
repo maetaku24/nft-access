@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../_utils/getCurrentUser';
-import { prisma } from '@/utils/prisma';
-import { handleError } from '@/app/api/_utils/handleError';
-import {
+import type {
   CreateProfileRequest,
   CreateProfileResponse,
 } from '@/app/_types/profile/CreateProfile';
+import { handleError } from '@/app/api/_utils/handleError';
+import { prisma } from '@/utils/prisma';
 
 export const GET = async (request: NextRequest) => {
   try {
