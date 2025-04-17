@@ -96,8 +96,8 @@ model Schedule {
   date            DateTime?
   startTime       String
   endTime         String
-  maxParticipants Int?
-  isClosed        Boolean?
+  maxParticipants Int
+  isClosed        Boolean
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   eventSchedules  EventSchedule[]
