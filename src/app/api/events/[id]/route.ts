@@ -2,10 +2,13 @@ import dayjs from 'dayjs';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../../_utils/getCurrentUser';
+import type { DetailResponse } from '@/app/_types/event/DetailResponse';
 import type {
   UpdateEventRequest,
   UpdateEventResponse,
 } from '@/app/_types/event/UpdateEvent';
+import type { Nft } from '@/app/_types/nft';
+import type { Schedule } from '@/app/_types/schedule';
 import { handleError } from '@/app/api/_utils/handleError';
 import { prisma } from '@/utils/prisma';
 
@@ -62,7 +65,22 @@ export const GET = async (
       );
     }
 
-    return NextResponse.json({ eventDetail });
+    const nfts: Nft[] = eventDetail.eventNFTs.map(({ nft }) => nft);
+    const schedules: Schedule[] = eventDetail.eventSchedules.map(
+      ({ schedule }) => ({
+        ...schedule,
+        date: schedule.date ?? undefined,
+      })
+    );
+
+    const response = {
+      eventName: eventDetail.eventName,
+      length: eventDetail.length,
+      nfts,
+      schedules,
+    };
+
+    return NextResponse.json<DetailResponse>(response);
   } catch (error) {
     return handleError(error);
   }
