@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getCurrentUser } from '../../_utils/getCurrentUser';
-import type { DetailResponse } from '@/app/_types/event/DetailResponse';
+import type { EditResponse } from '@/app/_types/event/EditResponse';
 import type {
   UpdateEventRequest,
   UpdateEventResponse,
@@ -73,14 +73,14 @@ export const GET = async (
       })
     );
 
-    const response = {
+    const response: EditResponse = {
       eventName: eventDetail.eventName,
       length: eventDetail.length,
       nfts,
       schedules,
     };
 
-    return NextResponse.json<DetailResponse>(response);
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     return handleError(error);
   }

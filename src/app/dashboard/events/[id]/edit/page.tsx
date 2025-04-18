@@ -4,7 +4,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useFetch } from '@/app/_hooks/useFetch';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
-import type { DetailResponse } from '@/app/_types/event/DetailResponse';
+import type { EditResponse } from '@/app/_types/event/EditResponse';
 import type {
   UpdateEventRequest,
   UpdateEventResponse,
@@ -16,7 +16,7 @@ export default function EditEventPage() {
   const { id } = useParams();
   const { token } = useSupabaseSession();
   const router = useRouter();
-  const { data, isLoading, mutate } = useFetch<DetailResponse>(
+  const { data, isLoading, mutate } = useFetch<EditResponse>(
     `/api/events/${id}`
   );
 
