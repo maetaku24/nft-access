@@ -13,8 +13,8 @@ import {
 import { useFetch } from '@/app/_hooks/useFetch';
 import type { listResponse } from '@/app/_types/event/listResponse';
 
-export const EventCard: React.FC = () => {
-  const { data: events, mutate } = useFetch<listResponse>('/api/events');
+export const EventCardList: React.FC = () => {
+  const { data: events } = useFetch<listResponse>('/api/events');
   const router = useRouter();
 
   if (!events) return;
@@ -41,7 +41,7 @@ export const EventCard: React.FC = () => {
                 className='inline-flex items-center justify-center rounded p-[2px] transition hover:bg-green-300 hover:text-white'
                 onClick={(e) => e.stopPropagation()}
               >
-                <EventMenu id={event.id} mutate={mutate} />
+                <EventMenu id={event.id} />
               </div>
             </div>
           </CardHeader>
