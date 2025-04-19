@@ -10,16 +10,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
+import { useFetch } from '@/app/_hooks/useFetch';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 import type { DeleteEventResponse } from '@/app/_types/event/DeleteEventResponse';
+import type { listResponse } from '@/app/_types/event/listResponse';
 import { deleteRequest } from '@/app/_utils/api';
 
 interface Props {
   id: number;
-  mutate: () => void;
 }
 
-export const EventMenu: React.FC<Props> = ({ id, mutate }) => {
+export const EventMenu: React.FC<Props> = ({ id }) => {
+  const { mutate } = useFetch<listResponse>('/api/events');
   const { token } = useSupabaseSession();
   const router = useRouter();
 
@@ -32,7 +34,7 @@ export const EventMenu: React.FC<Props> = ({ id, mutate }) => {
         );
         toast.info('イベントを削除しました');
         mutate();
-        router.push('/dashboard');
+        router.replace('/dashboard');
       } catch (error) {
         toast.error(`イベントが削除できませんでした: ${error}`);
       }
