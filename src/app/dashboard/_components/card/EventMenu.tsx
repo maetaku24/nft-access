@@ -4,16 +4,15 @@ import { Ellipsis } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { useEvents } from '../../_hooks/useEvents';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
-import { useFetch } from '@/app/_hooks/useFetch';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 import type { DeleteEventResponse } from '@/app/_types/event/DeleteEventResponse';
-import type { listResponse } from '@/app/_types/event/listResponse';
 import { deleteRequest } from '@/app/_utils/api';
 
 interface Props {
@@ -21,7 +20,7 @@ interface Props {
 }
 
 export const EventMenu: React.FC<Props> = ({ id }) => {
-  const { mutate } = useFetch<listResponse>('/api/events');
+  const { mutate } = useEvents();
   const { token } = useSupabaseSession();
   const router = useRouter();
 

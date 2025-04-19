@@ -2,6 +2,7 @@
 
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
+import { useEvents } from '../../_hooks/useEvents';
 import { EventMenu } from './EventMenu';
 import { Badge } from '@/app/_components/ui/badge';
 import {
@@ -10,11 +11,9 @@ import {
   CardFooter,
   CardHeader,
 } from '@/app/_components/ui/card';
-import { useFetch } from '@/app/_hooks/useFetch';
-import type { listResponse } from '@/app/_types/event/listResponse';
 
 export const EventCardList: React.FC = () => {
-  const { data: events } = useFetch<listResponse>('/api/events');
+  const { data: events } = useEvents();
   const router = useRouter();
 
   if (!events) return;
