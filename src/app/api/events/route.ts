@@ -24,13 +24,6 @@ export const GET = async (request: NextRequest) => {
       },
     });
 
-    if (events.length === 0) {
-      return NextResponse.json(
-        { status: 'エラー', message: 'イベントが見つかりません' },
-        { status: 404 }
-      );
-    }
-
     const response: listResponse = events.map((event) => ({
       id: event.id,
       eventName: event.eventName,
