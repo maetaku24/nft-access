@@ -6,6 +6,7 @@ import type {
   CreateEventRequest,
   CreateEventResponse,
 } from '@/app/_types/event/CreateEvent';
+import type { listResponse } from '@/app/_types/event/listResponse';
 import { handleError } from '@/app/api/_utils/handleError';
 import { prisma } from '@/utils/prisma';
 
@@ -18,16 +19,19 @@ export const GET = async (request: NextRequest) => {
           id: profile.id,
         },
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
 
-    if (events.length === 0) {
-      return NextResponse.json(
-        { status: 'エラー', message: 'イベントが見つかりません' },
-        { status: 404 }
-      );
-    }
+    const response: listResponse = events.map((event) => ({
+      id: event.id,
+      eventName: event.eventName,
+      createdAt: dayjs(event.createdAt).format(),
+      updatedAt: dayjs(event.updatedAt).format(),
+    }));
 
-    return NextResponse.json({ events }, { status: 200 });
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     return handleError(error);
   }

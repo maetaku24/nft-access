@@ -16,17 +16,16 @@ export default function NewEventPage() {
 
   const handleSubmit = async (data: CreateEventRequest) => {
     try {
-      const res = await postRequest<CreateEventRequest, CreateEventResponse>(
+      await postRequest<CreateEventRequest, CreateEventResponse>(
         '/api/events',
         data,
         token ?? undefined
       );
-      console.log('イベント作成成功:', res);
       router.replace('/dashboard');
       toast.info('イベントが登録できました。');
     } catch (error) {
       console.log(error);
-      toast.error('イベントが作成できませんでした');
+      toast.error(`イベントが作成できませんでした: ${error}`);
     }
   };
   return (

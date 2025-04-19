@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import Button from '../Button';
+import { HeaderActionButton } from './HeaderActionButton';
 import Logo from './Logo';
 import UserMenu from './UserMenu';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
@@ -16,10 +17,7 @@ export const Header: React.FC = () => {
 
   if (pathname === '/signup' || pathname === '/login') {
     return (
-      <header
-        className='fixed inset-x-0 top-0 z-50 flex items-center justify-between 
-                      bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'
-      >
+      <header className='fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'>
         <Link
           href={logoUrl}
           className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
@@ -36,10 +34,7 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <header
-      className='fixed inset-x-0 top-0 z-50 flex items-center justify-between 
-                      bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'
-    >
+    <header className='fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'>
       <Link
         href={logoUrl}
         className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
@@ -50,11 +45,7 @@ export const Header: React.FC = () => {
         <div className='flex items-center gap-4'>
           {session ? (
             <>
-              <Link href='/dashboard/events/new'>
-                <Button type='button' variant='primary'>
-                  新規イベント作成
-                </Button>
-              </Link>
+              <HeaderActionButton />
               <UserMenu />
             </>
           ) : (
