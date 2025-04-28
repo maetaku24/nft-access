@@ -32,14 +32,14 @@ export const GET = async (request: NextRequest) => {
 
 export const POST = async (request: Request) => {
   try {
-    const { supabaseUserId, name, email }: CreateProfileRequest =
+    const { supabaseUserId, userId, email }: CreateProfileRequest =
       await request.json();
 
     // profileをDBに生成
     const data = await prisma.profile.create({
       data: {
         supabaseUserId,
-        name,
+        userId,
         email,
       },
     });

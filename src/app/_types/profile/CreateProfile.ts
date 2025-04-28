@@ -1,6 +1,6 @@
 export interface CreateProfileRequest {
   supabaseUserId: string;
-  name: string;
+  userId: string;
   email: string;
 }
 

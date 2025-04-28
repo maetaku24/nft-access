@@ -41,8 +41,8 @@ export const useSignupForm = () => {
       }
 
       // 入力されたemailの@より前の文字をnameに格納
-      const name = email.split('@')[0];
-      const body: CreateProfileRequest = { supabaseUserId, name, email };
+      const userId = email.split('@')[0];
+      const body: CreateProfileRequest = { supabaseUserId, userId, email };
 
       const res = await postRequest<
         CreateProfileRequest,
