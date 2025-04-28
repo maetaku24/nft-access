@@ -19,7 +19,7 @@ export const EventCardList: React.FC = () => {
   if (!events) return;
 
   const handleDetailEvent = (eventId: number) => {
-    router.push(`/dashboard/events/${eventId}/edit`);
+    router.push(`/dashboard/events/${eventId}`);
   };
   return (
     <div className='space-y-4'>
