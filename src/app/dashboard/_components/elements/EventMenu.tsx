@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useEvents } from '../../_hooks/useEvents';
-import { ConfirmDialog } from '../elements/ConfirmDialog';
+import { ConfirmDialog } from './ConfirmDialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
