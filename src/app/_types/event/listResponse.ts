@@ -1,8 +1,8 @@
-export interface list {
+export interface List {
   id: number;
   eventName: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export type listResponse = list[];
+export type ListResponse = List[];
