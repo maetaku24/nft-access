@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import Button from '../_components/Button';
 import TextInput from '../_components/TextInput';
+import { Button } from '../_components/ui/button';
 import { useLoginForm } from './_hooks/useLoginForm';
 
 export default function LoginPage() {
@@ -46,9 +46,7 @@ export default function LoginPage() {
           </div>
           <Button
             type='submit'
-            variant='primary'
-            width='stretch'
-            className='mt-16'
+            className='mt-14 w-full'
             disabled={isSubmitting}
           >
             {isSubmitting ? '送信中...' : 'ログイン'}

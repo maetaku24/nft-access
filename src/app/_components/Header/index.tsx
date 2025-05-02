@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMemo } from 'react';
-import Button from '../Button';
+import { Button } from '../ui/button';
 import { HeaderActionButton } from './HeaderActionButton';
 import Logo from './Logo';
 import UserMenu from './UserMenu';
@@ -25,7 +25,7 @@ export const Header: React.FC = () => {
           <Logo />
         </Link>
         <Link href={pathname === '/signup' ? '/login' : '/signup'}>
-          <Button type='button' variant='primary'>
+          <Button type='button' className='text-base font-semibold'>
             {pathname === '/signup' ? 'ログイン' : '新規登録'}
           </Button>
         </Link>
@@ -51,17 +51,25 @@ export const Header: React.FC = () => {
           ) : (
             <>
               <Link href='/login'>
-                <Button type='button' variant='primary'>
+                <Button type='button' className='text-base font-semibold'>
                   ログイン
                 </Button>
               </Link>
               <Link href='/signup'>
-                <Button type='button' variant='outline'>
+                <Button
+                  type='button'
+                  variant='outline'
+                  className='text-base font-semibold'
+                >
                   新規登録
                 </Button>
               </Link>
               <Link href='/contact'>
-                <Button type='button' variant='outline'>
+                <Button
+                  type='button'
+                  variant='outline'
+                  className='text-base font-semibold'
+                >
                   お問い合わせ
                 </Button>
               </Link>
