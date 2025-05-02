@@ -1,10 +1,13 @@
 'use client';
 
+import { ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useShareUrl } from '../../_hooks/useShareUrl';
 import { CopyUrlButton } from './CopyUrlButton';
 import { EventMenu } from './EventMenu';
 import { Badge } from '@/app/_components/ui/badge';
+import { Button } from '@/app/_components/ui/button';
 import {
   Card,
   CardTitle,
@@ -68,9 +71,18 @@ export const EventCardItem: React.FC<Props> = ({ event }) => {
           </div>
         </div>
         <div onClick={(e) => e.stopPropagation()}>
+          <Link href={data.shareUrl} target='_blank'>
+            <Button
+              variant='ghost'
+              className='text-base text-gray-900 hover:text-black'
+            >
+              <ExternalLink size={28} />
+              <span>ページを表示</span>
+            </Button>
+          </Link>
           <CopyUrlButton
-            shareUrl={data?.shareUrl}
-            className='text-green-300 hover:text-green-400'
+            shareUrl={data.shareUrl}
+            className='text-base text-green-300 hover:text-green-400'
           />
         </div>
       </CardFooter>
