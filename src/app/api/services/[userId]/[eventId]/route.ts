@@ -12,6 +12,9 @@ export const GET = async (
     const event = await prisma.event.findFirst({
       where: {
         id: eventId,
+        profile: {
+          userId: params.userId,
+        },
       },
       include: {
         profile: true,
