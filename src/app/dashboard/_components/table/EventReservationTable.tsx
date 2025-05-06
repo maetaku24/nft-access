@@ -1,26 +1,16 @@
 'use client';
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  createColumnHelper,
-} from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { ConfirmDialog } from '../elements/ConfirmDialog';
 import { SkeletonTable } from '../skeleton/SkeletonTable';
+import { GenericTable } from '@/app/_components/GenericTable';
 import { Button } from '@/app/_components/ui/button';
 import { Label } from '@/app/_components/ui/label';
-import {
-  Table,
-  TableRow,
-  TableHead,
-  TableHeader,
-  TableBody,
-  TableCell,
-} from '@/app/_components/ui/table';
+
 import { useFetch } from '@/app/_hooks/useFetch';
 import type { DeleteReservationResponse } from '@/app/_types/reservation/DeleteReservationResponse';
 import type { EventListResponse } from '@/app/_types/reservation/EventListResponse';
@@ -89,70 +79,18 @@ export const EventReservationTable: React.FC = () => {
       ),
     }),
   ];
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
 
   return (
     <div className='w-full'>
       <Label className='text-base font-semibold'>予約一覧</Label>
       <div className='mt-2 overflow-hidden rounded-md border border-black bg-white'>
-        <Table className='w-full'>
-          <TableHeader className='bg-gray-300'>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className='w-1/5 border-0 text-center text-gray-900'
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {isLoading ? (
-              <SkeletonTable row={3} columns={columns.length} />
-            ) : table.getRowModel().rows.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={table.getAllColumns().length}
-                  className='py-10 text-center text-2xl font-semibold text-gray-900'
-                >
-                  現在予約はありません
-                </TableCell>
-              </TableRow>
-            ) : (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className='odd:bg-white even:bg-gray-100'
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className='w-1/5 border-0 text-center'
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+        <GenericTable
+          data={data}
+          columns={columns as ColumnDef<EventListResponse, unknown>[]}
+          isLoading={isLoading}
+          emptyMessage='現在予約はありません'
+          skeleton={<SkeletonTable row={3} columns={columns.length} />}
+        />
         <ConfirmDialog
           isOpen={isOpen}
           onClose={() => {
