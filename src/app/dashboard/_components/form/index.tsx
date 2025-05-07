@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { usePathname } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { EventSchema } from '../../_schema/eventSchema';
 import type { Event } from '../../_schema/eventSchema';
@@ -34,6 +35,9 @@ export const EventForm: React.FC<Props> = ({ onSubmit, defaultValues }) => {
     },
   });
 
+  const pathname = usePathname();
+  const isEditing = pathname.includes('/edit');
+
   return (
     <Form {...methods}>
       <div className='flex min-h-screen items-start justify-center pt-20'>
@@ -51,7 +55,13 @@ export const EventForm: React.FC<Props> = ({ onSubmit, defaultValues }) => {
                 disabled={methods.formState.isSubmitting}
                 className='w-[500px] bg-green-300 hover:bg-green-300/50'
               >
-                {methods.formState.isSubmitting ? '作成中...' : '作成する'}
+                {methods.formState.isSubmitting
+                  ? isEditing
+                    ? '更新中...'
+                    : '作成中...'
+                  : isEditing
+                    ? '更新する'
+                    : '作成する'}
               </Button>
             </div>
           </form>

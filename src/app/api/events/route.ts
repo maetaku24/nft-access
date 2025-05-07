@@ -6,7 +6,7 @@ import type {
   CreateEventRequest,
   CreateEventResponse,
 } from '@/app/_types/event/CreateEvent';
-import type { listResponse } from '@/app/_types/event/listResponse';
+import type { ListResponse } from '@/app/_types/event/ListResponse';
 import { handleError } from '@/app/api/_utils/handleError';
 import { prisma } from '@/utils/prisma';
 
@@ -24,7 +24,7 @@ export const GET = async (request: NextRequest) => {
       },
     });
 
-    const response: listResponse = events.map((event) => ({
+    const response: ListResponse = events.map((event) => ({
       id: event.id,
       eventName: event.eventName,
       createdAt: dayjs(event.createdAt).format(),

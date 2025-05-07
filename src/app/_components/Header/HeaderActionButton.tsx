@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Button from '../Button';
+import { Button } from '../ui/button';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 
 export const HeaderActionButton: React.FC = () => {
@@ -14,7 +14,9 @@ export const HeaderActionButton: React.FC = () => {
   if (pathname === '/dashboard') {
     return (
       <Link href='/dashboard/events/new'>
-        <Button type='button'>新規イベント作成</Button>
+        <Button className='text-base font-semibold' type='button'>
+          新規イベント作成
+        </Button>
       </Link>
     );
   }
@@ -22,7 +24,9 @@ export const HeaderActionButton: React.FC = () => {
   if (pathname.startsWith('/dashboard')) {
     return (
       <Link href='/dashboard'>
-        <Button type='button'>ダッシュボード</Button>
+        <Button className='text-base font-semibold' type='button'>
+          ダッシュボード
+        </Button>
       </Link>
     );
   }

@@ -1,4 +1,4 @@
 import { useFetch } from '@/app/_hooks/useFetch';
-import type { listResponse } from '@/app/_types/event/listResponse';
+import type { ListResponse } from '@/app/_types/event/ListResponse';
 
-export const useEvents = () => useFetch<listResponse>('/api/events');
+export const useEvents = () => useFetch<ListResponse>('/api/events');

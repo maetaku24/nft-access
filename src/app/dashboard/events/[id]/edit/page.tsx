@@ -1,5 +1,4 @@
 'use client';
-import dayjs from 'dayjs';
 import { useRouter, useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useFetch } from '@/app/_hooks/useFetch';
@@ -11,6 +10,8 @@ import type {
 } from '@/app/_types/event/UpdateEvent';
 import { putRequest } from '@/app/_utils/api';
 import { EventForm } from '@/app/dashboard/_components/form';
+import { EventFormSkeleton } from '@/app/dashboard/_components/skeleton/EventFormSkeleton';
+import { dayjs } from '@/utils/dayjs';
 
 export default function EditEventPage() {
   const { id } = useParams();
@@ -35,12 +36,7 @@ export default function EditEventPage() {
     }
   };
 
-  if (isLoading || !data)
-    return (
-      <div className='mt-40 flex items-center justify-center text-4xl font-bold'>
-        ロード中...
-      </div>
-    );
+  if (isLoading || !data) return <EventFormSkeleton />;
 
   return (
     <div>
