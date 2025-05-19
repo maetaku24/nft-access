@@ -15,6 +15,12 @@ export const GET = async (request: NextRequest) => {
       where: {
         id: profile.id,
       },
+      select: {
+        userId: true,
+        name: true,
+        walletAddress: true,
+        iconKey: true,
+      },
     });
 
     if (!data) {
@@ -24,7 +30,7 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
-    return NextResponse.json({ data }, { status: 200 });
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
     return handleError(error);
   }
