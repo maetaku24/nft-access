@@ -16,7 +16,7 @@ import { appBaseUrl } from '@/config/app-config';
 import { supabase } from '@/utils/supabase';
 
 export const useEmailUpdateForm = () => {
-  const methods = useForm<ProfileEmail>({
+  const { register, handleSubmit, formState } = useForm<ProfileEmail>({
     resolver: zodResolver(profileEmailSchema),
     mode: 'onBlur',
     reValidateMode: 'onBlur',
@@ -65,7 +65,8 @@ export const useEmailUpdateForm = () => {
 
   return {
     email: data?.email,
-    handleUpdateEmail,
-    formMethods: methods,
+    register,
+    handleSubmit: handleSubmit(handleUpdateEmail),
+    formState,
   };
 };
