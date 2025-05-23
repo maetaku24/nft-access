@@ -18,7 +18,7 @@ const textInputStyles = tv({
     },
     error: {
       true: {
-        labelStyle: 'mb-2 block text-base font-medium text-red-700',
+        labelStyle: 'mb-2 block text-sm font-semibold text-red-700',
         inputStyle:
           'block h-12 w-full rounded-lg border border-red-500 bg-red-50 px-4 text-base text-red-900 placeholder-red-700 focus:border-red-500 focus:ring-red-500',
       },
