@@ -1,6 +1,6 @@
 export interface UpdateProfileRequest {
   userId: string;
-  name: string;
+  name?: string;
   walletAddress?: string;
   iconKey?: string;
 }

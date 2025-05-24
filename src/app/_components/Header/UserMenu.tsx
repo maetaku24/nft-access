@@ -9,10 +9,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { useFetch } from '@/app/_hooks/useFetch';
+import type { IconUrlResponse } from '@/app/_types/profile/IconUrlResponse';
 import { supabase } from '@/utils/supabase';
 
 export default function UserMenu() {
+  const { data } = useFetch<IconUrlResponse>('/api/profile');
   const router = useRouter();
+
+  if (!data) return;
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push('/');
@@ -22,7 +28,7 @@ export default function UserMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger className='focus-visible:outline-none'>
         <Avatar>
-          <AvatarImage src='/avatar_test.png' alt='Rounded avatar' />
+          <AvatarImage src={data.iconUrl} alt='Rounded avatar' />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
