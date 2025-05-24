@@ -7,8 +7,7 @@ import TextInput from '@/app/_components/TextInput';
 import { Button } from '@/app/_components/ui/button';
 
 export default function BasicSettingsPage() {
-  const { profile, methods, handleUpdateProfile } = useProfileBasic();
-  if (!profile) return;
+  const { methods, handleUpdateProfile } = useProfileBasic();
 
   const { handleSubmit, register, formState } = methods;
   return (
@@ -25,7 +24,6 @@ export default function BasicSettingsPage() {
           label='ユーザーID'
           id='userid'
           type='text'
-          defaultValue={profile.userId}
           {...register('userId')}
           disabled={formState.isSubmitting}
           errorMessage={formState.errors.userId?.message}
@@ -34,7 +32,6 @@ export default function BasicSettingsPage() {
           label='ユーザー名'
           id='username'
           type='text'
-          defaultValue={profile.name}
           {...register('name')}
           disabled={formState.isSubmitting}
           errorMessage={formState.errors.name?.message}
@@ -43,7 +40,6 @@ export default function BasicSettingsPage() {
           label='ウォレットアドレス'
           id='walletAddress'
           type='text'
-          defaultValue={profile.walletAddress}
           {...register('walletAddress')}
           errorMessage={formState.errors.walletAddress?.message}
         />
