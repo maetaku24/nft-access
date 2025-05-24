@@ -2,7 +2,7 @@ import { avatarBucket } from '@/config/app-config';
 import { supabase } from '@/utils/supabase';
 
 export const avatarUrlFromKey = (
-  iconKey?: string | null | undefined
+  iconKey?: string | null
 ): string | undefined => {
   if (!iconKey) return undefined;
 
