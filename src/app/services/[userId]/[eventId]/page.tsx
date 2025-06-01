@@ -1,6 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useAccount } from 'wagmi';
 import { useFetch } from '@/app/_hooks/useFetch';
 
 export default function PublicEventPage() {
@@ -9,6 +10,7 @@ export default function PublicEventPage() {
   const { data } = useFetch<{ userId: string; eventId: string }>(
     `/api/services/${userId}/${eventId}`
   );
+  const { address } = useAccount();
 
   if (!data) return;
 
@@ -18,10 +20,11 @@ export default function PublicEventPage() {
         イベント予約ページ（仮）
       </h1>
       <div className='flex items-center justify-center text-lg font-semibold'>
-        userId: {data.userId}
-      </div>
-      <div className='flex items-center justify-center text-lg font-semibold'>
         eventId: {data.eventId}
+      </div>
+      <div className='flex items-center justify-center gap-2'>
+        接続中のアドレス:
+        <div className='text-base font-semibold'>{address ?? '未接続'}</div>
       </div>
     </main>
   );
