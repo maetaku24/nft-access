@@ -2,6 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useEventAuth } from '../../_hooks/useEventAuth';
+import { Badge } from '@/app/_components/ui/badge';
 
 export default function PublicEventPage() {
   const { userId, eventId } = useParams<{ userId: string; eventId: string }>();
@@ -30,11 +31,17 @@ export default function PublicEventPage() {
             </h2>
             {eventData.nfts.map((nft, index) => (
               <div key={index} className='rounded border bg-white p-4'>
-                <div className='mb-2 font-semibold text-gray-900'>
-                  対象コレクション：{nft.collectionName}
+                <div className='mb-2 flex items-center gap-2 font-semibold text-gray-900'>
+                  <Badge className='bg-green-200 text-sm font-semibold text-gray-900 shadow-none hover:bg-green-200'>
+                    コレクション
+                  </Badge>
+                  {nft.collectionName}
                 </div>
-                <div className='mb-2 font-semibold text-gray-900'>
-                  必要保有数：{nft.minBalance}点
+                <div className='mb-2 flex items-center gap-2 font-semibold text-gray-900'>
+                  <Badge className='bg-green-200 text-sm font-semibold text-gray-900 shadow-none hover:bg-green-200'>
+                    必要保有数
+                  </Badge>
+                  {nft.minBalance}点
                   {nft.maxBalance ? ` 〜 ${nft.maxBalance}点` : '以上'}
                 </div>
               </div>
