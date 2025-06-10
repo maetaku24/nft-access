@@ -31,13 +31,13 @@ model Profile {
 
 // Eventテーブル
 model Event {
-  id             Int      @id @default(autoincrement())
+  id             Int             @id @default(autoincrement())
   profileId      Int
   eventName      String
   length         Int
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  profile        Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  profile        Profile         @relation(fields: [profileId], references: [id], onDelete: Cascade)
   eventNFTs      EventNFT[]
   eventSchedules EventSchedule[]
   reservation    Reservation[]
@@ -45,39 +45,27 @@ model Event {
 
 // EventとNFTの中間テーブル
 model EventNFT {
-  id         Int      @id @default(autoincrement())
-  eventId    Int
-  nftId      Int
-  createdAt  DateTime @default(now())
-  event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  nft        Nft      @relation(fields: [nftId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  nftId     Int
+  createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  nft       Nft      @relation(fields: [nftId], references: [id], onDelete: Cascade)
 }
 
 // NFTテーブル
 model Nft {
-  id              Int      @id @default(autoincrement())
+  id              Int        @id @default(autoincrement())
   collectionName  String
   standard        Standard
   network         Network
   contractAddress String
   tokenId         Int?
   minBalance      Int
-  maxBalance      Int
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  maxBalance      Int?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
   eventNFTs       EventNFT[]
-}
-
-// NFT規格
-enum Standard {
-  ERC721
-  ERC1155
-}
-
-// NFTネットワーク
-enum Network {
-  ETHEREUM
-  POLYGON
 }
 
 // EventとScheduleの中間テーブル
@@ -86,21 +74,21 @@ model EventSchedule {
   eventId    Int
   scheduleId Int
   createdAt  DateTime @default(now())
-  schedule   Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
   event      Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  schedule   Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
 }
 
 // Scheduleテーブル
 model Schedule {
-  id              Int      @id @default(autoincrement())
+  id              Int             @id @default(autoincrement())
   weekday         String
   date            DateTime?
   startTime       String
   endTime         String
   maxParticipants Int
   isClosed        Boolean
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
   eventSchedules  EventSchedule[]
 }
 
@@ -121,7 +109,16 @@ model Reservation {
   events          Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
-// 更新状態
+enum Standard {
+  ERC721
+  ERC1155
+}
+
+enum Network {
+  ETHEREUM
+  POLYGON
+}
+
 enum Status {
   COMPLETED
   UPDATED

@@ -107,9 +107,13 @@ export const NftForm: React.FC<Props> = ({ control }) => {
                       <FormControl>
                         <Input
                           type='number'
-                          placeholder='最大値'
+                          placeholder='最大値（空白で上限なし）'
                           {...field}
                           value={field.value ?? ''}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            field.onChange(value === '' ? null : Number(value));
+                          }}
                           className='rounded-lg border border-gray-300 bg-white text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500'
                         />
                       </FormControl>

@@ -28,14 +28,30 @@ export const nftSchema = z
       .number({ message: '1以上を入力してください' })
       .int()
       .min(1, '1以上を入力してください'),
-    maxBalance: z.coerce
-      .number({ message: '1以上を入力してください' })
-      .int()
-      .min(1, '1以上を入力してください'),
+    maxBalance: z
+      .union([
+        z
+          .string()
+          .length(0)
+          .transform(() => null), // 空文字列をnullに変換
+        z.coerce
+          .number({ message: '1以上を入力してください' })
+          .int()
+          .min(1, '1以上を入力してください'),
+        z.null(),
+      ])
+      .optional()
+      .nullable(),
   })
-  .refine(({ minBalance, maxBalance }) => minBalance <= maxBalance, {
-    message: '最大保有数は最小保有数以上にしてください',
-    path: ['maxBalance'],
-  });
+  .refine(
+    ({ minBalance, maxBalance }) => {
+      if (maxBalance == null) return true; // maxBalanceがnullの場合は上限なしなのでOK
+      return minBalance <= maxBalance;
+    },
+    {
+      message: '最大保有数は最小保有数以上にしてください',
+      path: ['maxBalance'],
+    }
+  );
 
 export type Nft = z.infer<typeof nftSchema>;
