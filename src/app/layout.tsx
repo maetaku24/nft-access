@@ -4,7 +4,7 @@ import { Header } from './_components/Header';
 import './globals.css';
 import ToastProvider from './_components/ToastProvider';
 import { appName } from '@/config/app-config';
-import { RainbowKitProviderWrapper } from '@/lib/wallet/rainbowProvider';
+import { RainbowKitProviders } from '@/lib/wallet/rainbowProvider';
 import '@rainbow-me/rainbowkit/styles.css';
 
 const noto = Noto_Sans_JP({ subsets: ['latin'] });
@@ -22,12 +22,12 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={noto.className}>
-        <RainbowKitProviderWrapper>
-          <ToastProvider>
+        <ToastProvider>
+          <RainbowKitProviders>
             <Header />
             {children}
-          </ToastProvider>
-        </RainbowKitProviderWrapper>
+          </RainbowKitProviders>
+        </ToastProvider>
       </body>
     </html>
   );
