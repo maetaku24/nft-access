@@ -8,25 +8,15 @@ export const GET = async (
   { params }: { params: { userId: string; eventId: string } }
 ) => {
   try {
-    const { userId, eventId } = params;
-    const eventIdNumber = parseInt(eventId);
-
-    // プロフィールとイベント情報を取得
-    const profile = await prisma.profile.findUnique({
-      where: { userId },
-    });
-
-    if (!profile) {
-      return NextResponse.json(
-        { message: 'ユーザーが見つかりません' },
-        { status: 404 }
-      );
-    }
+    const { userId } = params;
+    const eventId = parseInt(params.eventId);
 
     const event = await prisma.event.findUnique({
       where: {
-        id: eventIdNumber,
-        profileId: profile.id,
+        id: eventId,
+        profile: {
+          userId,
+        },
       },
       include: {
         eventNFTs: {
