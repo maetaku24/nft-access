@@ -1,5 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import type { EventData } from '@/app/_types/event';
 import { handleError } from '@/app/api/_utils/handleError';
 import { prisma } from '@/utils/prisma';
 
@@ -53,7 +54,7 @@ export const GET = async (
       })),
     };
 
-    return NextResponse.json(publicEventData, { status: 200 });
+    return NextResponse.json<EventData>(publicEventData, { status: 200 });
   } catch (error) {
     return handleError(error);
   }
