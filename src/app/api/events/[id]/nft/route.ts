@@ -23,7 +23,7 @@ export const GET = async (
 
     // イベント情報とNFT条件を取得
     const event = await prisma.event.findUnique({
-      where: { id: eventId },
+      where: { id: eventId, eventNFTs: { some: {} } },
       include: {
         eventNFTs: {
           include: {
@@ -40,25 +40,14 @@ export const GET = async (
       );
     }
 
-    if (event.eventNFTs.length === 0) {
-      return NextResponse.json(
-        { ok: false, reason: 'このイベントにはNFT条件が設定されていません' },
-        { status: 404 }
-      );
-    }
+    // NFT条件チェック関数
+    const checkNftCondition = async (eventNft: (typeof event.eventNFTs)[0]) => {
+      const { nft } = eventNft;
 
-    // すべてのNFT条件をチェック（AND条件）
-    for (const { nft } of event.eventNFTs) {
       // ネットワークに応じたAlchemyインスタンスを取得
       const alchemy = alchemyFor(nft.network.toLowerCase());
       if (!alchemy) {
-        return NextResponse.json(
-          {
-            ok: false,
-            reason: `サポートされていないネットワーク: ${nft.network}`,
-          },
-          { status: 400 }
-        );
+        throw new Error(`サポートされていないネットワーク: ${nft.network}`);
       }
 
       let isEligible = false;
@@ -72,12 +61,8 @@ export const GET = async (
       } else if (nft.standard === 'ERC1155') {
         // ERC1155の場合、TokenIDが必須
         if (!nft.tokenId && nft.tokenId !== 0) {
-          return NextResponse.json(
-            {
-              ok: false,
-              reason: `ERC1155コレクション「${nft.collectionName}」にTokenIDが設定されていません`,
-            },
-            { status: 400 }
+          throw new Error(
+            `ERC1155コレクション「${nft.collectionName}」にTokenIDが設定されていません`
           );
         }
 
@@ -88,22 +73,38 @@ export const GET = async (
           maxBalance: nft.maxBalance,
         });
       } else {
-        return NextResponse.json(
-          { ok: false, reason: `サポートされていないNFT標準: ${nft.standard}` },
-          { status: 400 }
-        );
+        throw new Error(`サポートされていないNFT標準: ${nft.standard}`);
       }
 
+      return {
+        isEligible,
+        collectionName: nft.collectionName,
+      };
+    };
+
+    try {
+      const results = await Promise.all(event.eventNFTs.map(checkNftCondition));
+
       // 1つでも条件を満たさない場合は失敗
-      if (!isEligible) {
+      const failedCondition = results.find((result) => !result.isEligible);
+      if (failedCondition) {
         return NextResponse.json(
           {
             ok: false,
-            reason: `NFT条件を満たしていません。対象コレクション: ${nft.collectionName}`,
+            reason: `NFT条件を満たしていません。対象コレクション: ${failedCondition.collectionName}`,
           },
           { status: 403 }
         );
       }
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'NFT条件チェック中にエラーが発生しました';
+      return NextResponse.json(
+        { ok: false, reason: errorMessage },
+        { status: 400 }
+      );
     }
 
     // すべての条件を満たした場合
