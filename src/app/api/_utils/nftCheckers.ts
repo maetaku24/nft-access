@@ -1,22 +1,34 @@
 import type { Alchemy } from 'alchemy-sdk';
 
+const UNLIMITED_BALANCE = 0;
+const MIN_OWNED_COUNT = 0;
+
+interface BaseNftConfig {
+  contractAddress: string;
+  minBalance: number;
+  maxBalance: number | null;
+}
+
+type Erc721Config = BaseNftConfig;
+
+interface Erc1155Config extends BaseNftConfig {
+  tokenId: string;
+}
+
 // ERC721
 export const checkErc721 = async (
   alchemy: Alchemy,
   addr: string,
-  nft: {
-    contractAddress: string;
-    minBalance: number;
-    maxBalance: number | null;
-  }
+  nft: Erc721Config
 ): Promise<boolean> => {
   try {
     const { totalCount } = await alchemy.nft.getNftsForOwner(addr, {
       contractAddresses: [nft.contractAddress],
     });
 
-    // maxBalance が null または 0 の場合は上限なしとして扱う
-    const hasMaxLimit = nft.maxBalance != null && nft.maxBalance > 0;
+    // maxBalance が null または UNLIMITED_BALANCE の場合は上限なしとして扱う
+    const hasMaxLimit =
+      nft.maxBalance != null && nft.maxBalance > UNLIMITED_BALANCE;
     const withinMaxLimit = hasMaxLimit ? totalCount <= nft.maxBalance! : true;
     const isValid = totalCount >= nft.minBalance && withinMaxLimit;
 
@@ -31,12 +43,7 @@ export const checkErc721 = async (
 export const checkErc1155 = async (
   alchemy: Alchemy,
   addr: string,
-  nft: {
-    contractAddress: string;
-    tokenId: string;
-    minBalance: number;
-    maxBalance: number | null;
-  }
+  nft: Erc1155Config
 ): Promise<boolean> => {
   try {
     const res = await alchemy.nft.getNftsForOwner(addr, {
@@ -51,10 +58,11 @@ export const checkErc1155 = async (
         n.tokenId.toLowerCase() === nft.tokenId.toLowerCase()
     );
 
-    const balance = Number(owned?.balance ?? 0);
+    const balance = Number(owned?.balance ?? MIN_OWNED_COUNT);
 
-    // maxBalanceがnullまたは0の場合は上限なしとして判定
-    const hasMaxLimit = nft.maxBalance != null && nft.maxBalance > 0;
+    // maxBalance が null または UNLIMITED_BALANCE の場合は上限なしとして扱う
+    const hasMaxLimit =
+      nft.maxBalance != null && nft.maxBalance > UNLIMITED_BALANCE;
     const withinMaxLimit = hasMaxLimit ? balance <= nft.maxBalance! : true;
     const isValid = balance >= nft.minBalance && withinMaxLimit;
 
