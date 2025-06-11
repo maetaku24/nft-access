@@ -139,7 +139,7 @@ export const PUT = async (
             contractAddress: nft.contractAddress,
             tokenId: nft.tokenId ?? null,
             minBalance: nft.minBalance,
-            maxBalance: nft.maxBalance,
+            maxBalance: nft.maxBalance ?? null,
           })),
           select: {
             id: true,

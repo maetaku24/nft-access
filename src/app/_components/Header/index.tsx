@@ -1,18 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useMemo } from 'react';
 import { Button } from '../ui/button';
 import { HeaderActionButton } from './HeaderActionButton';
 import Logo from './Logo';
 import UserMenu from './UserMenu';
+import { WalletConnectButton } from './WalletConnectButton';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 
 export const Header: React.FC = () => {
   const { session, isLoding } = useSupabaseSession();
   const pathname = usePathname();
 
+  const { userId, eventId } = useParams<{
+    userId?: string;
+    eventId?: string;
+  }>();
+
+  const isServicePage = pathname.startsWith('/services');
   const logoUrl = useMemo(() => (session ? '/dashboard' : '/'), [session]);
 
   if (pathname === '/signup' || pathname === '/login') {
@@ -29,6 +36,25 @@ export const Header: React.FC = () => {
             {pathname === '/signup' ? 'ログイン' : '新規登録'}
           </Button>
         </Link>
+      </header>
+    );
+  }
+
+  if (isServicePage) {
+    // userId / eventId が取れなければ fallback
+    const fallbackHref = '/services';
+
+    return (
+      <header className='fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-green-100 px-4 py-3 shadow'>
+        <Link
+          href={
+            userId && eventId ? `/services/${userId}/${eventId}` : fallbackHref
+          }
+          className='h-[40px] w-[200px]'
+        >
+          <Logo />
+        </Link>
+        <WalletConnectButton />
       </header>
     );
   }

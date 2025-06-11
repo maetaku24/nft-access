@@ -7,7 +7,7 @@ export interface Nft {
   contractAddress: string;
   tokenId?: number | null;
   minBalance: number;
-  maxBalance: number;
+  maxBalance?: number | null;
 }
 
 export interface NftIndexResponse {

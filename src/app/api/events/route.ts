@@ -62,7 +62,7 @@ export const POST = async (request: NextRequest) => {
             contractAddress: nft.contractAddress,
             tokenId: nft.tokenId ?? null,
             minBalance: nft.minBalance,
-            maxBalance: nft.maxBalance,
+            maxBalance: nft.maxBalance ?? null,
           })),
           select: {
             id: true,
