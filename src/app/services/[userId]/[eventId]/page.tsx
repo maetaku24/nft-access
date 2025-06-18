@@ -1,20 +1,18 @@
 'use client';
 
 import { useParams } from 'next/navigation';
+import { useAccount } from 'wagmi';
 import { ReservationForm } from '../../_components/form/ReservationForm';
-import { useEventAuth } from '../../_hooks/useEventAuth';
 
 export default function PublicEventPage() {
   const { userId, eventId } = useParams<{ userId: string; eventId: string }>();
-  const { address } = useEventAuth(userId, eventId);
+  const { address } = useAccount();
 
   return (
-    <div className='mx-auto max-w-4xl'>
-      <ReservationForm
-        userId={userId}
-        eventId={eventId}
-        walletAddress={address || ''}
-      />
-    </div>
+    <ReservationForm
+      userId={userId}
+      eventId={eventId}
+      walletAddress={address || ''}
+    />
   );
 }
