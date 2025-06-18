@@ -20,6 +20,8 @@ export interface FormSelectProps<T extends FieldValues>
   label: string;
   options: { value: string; label: string }[];
   placeholder?: string;
+  contentClassName?: string;
+  onValueChange?: (value: string) => void;
   [x: string]: unknown;
 }
 
@@ -29,6 +31,8 @@ export function FormSelect<S extends FieldValues>({
   label,
   options,
   placeholder,
+  contentClassName,
+  onValueChange,
   ...props
 }: FormSelectProps<S>) {
   return (
@@ -36,15 +40,23 @@ export function FormSelect<S extends FieldValues>({
       name={name}
       control={control}
       render={({ field }) => {
-        const selectedOption = options.find((opt) => opt.value === field.value);
+        const selectedOption = options.find(
+          (opt) => opt.value === String(field.value)
+        );
         return (
           <FormItem>
             <FormLabel>{label}</FormLabel>
             <FormControl>
               <Select
                 {...props}
-                value={field.value}
-                onValueChange={(value) => field.onChange(value)}
+                value={String(field.value)}
+                onValueChange={(value) => {
+                  if (onValueChange) {
+                    onValueChange(value);
+                  } else {
+                    field.onChange(value);
+                  }
+                }}
               >
                 <SelectTrigger
                   id={name}
@@ -55,7 +67,7 @@ export function FormSelect<S extends FieldValues>({
                     {selectedOption ? selectedOption.label : ''}
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className={contentClassName}>
                   {options.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
