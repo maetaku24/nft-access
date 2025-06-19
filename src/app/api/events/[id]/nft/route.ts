@@ -1,8 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { handleError } from '@/app/api/_utils/handleError';
-import { validateNftConditions } from '@/app/api/_utils/nftConditionValidator';
-import { prisma } from '@/utils/prisma';
+import { validateEventNftAccess } from '@/app/api/_utils/nft';
 
 export const GET = async (
   request: NextRequest,
@@ -20,43 +19,10 @@ export const GET = async (
       );
     }
 
-    // イベント情報とNFT条件を取得
-    const event = await prisma.event.findUnique({
-      where: { id: eventId, eventNFTs: { some: {} } },
-      include: {
-        eventNFTs: {
-          include: {
-            nft: true,
-          },
-        },
-      },
-    });
-
-    if (!event) {
-      return NextResponse.json(
-        { ok: false, reason: 'イベントが見つかりません' },
-        { status: 404 }
-      );
-    }
-
-    // NFT条件チェック
-    const validationResult = await validateNftConditions(event.eventNFTs, addr);
-
-    if (!validationResult.isValid) {
-      if (validationResult.failedCondition) {
-        return NextResponse.json(
-          {
-            ok: false,
-            reason: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
-          },
-          { status: 403 }
-        );
-      } else if (validationResult.errorMessage) {
-        return NextResponse.json(
-          { ok: false, reason: validationResult.errorMessage },
-          { status: 500 }
-        );
-      }
+    // NFT認証チェック
+    const nftValidationError = await validateEventNftAccess(eventId, addr);
+    if (nftValidationError) {
+      return nftValidationError;
     }
 
     // すべての条件を満たした場合
