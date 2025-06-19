@@ -6,7 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import FullCalendar from '@fullcalendar/react';
 import { useState } from 'react';
-import { ReservationModal } from '../modal/ReservationModal';
+import { ReservationModal } from '../../modal/ReservationModal';
 import { ReservationDayCellContent } from './ReservationDayCellContent';
 import { Label } from '@/app/_components/ui/label';
 import { useFetch } from '@/app/_hooks/useFetch';

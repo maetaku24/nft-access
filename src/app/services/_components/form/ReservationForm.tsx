@@ -1,6 +1,6 @@
 'use client';
 
-import { ReservationCalendar } from '../elements/ReservationCalendar';
+import { ReservationCalendar } from './elements/ReservationCalendar';
 
 interface Props {
   userId: string;

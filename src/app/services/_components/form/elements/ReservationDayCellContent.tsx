@@ -1,7 +1,7 @@
 'use client';
 
 import type { DayCellContentArg } from '@fullcalendar/core';
-import { reservationScheduleHelpers } from '../../_utils/reservationScheduleHelpers';
+import { reservationScheduleHelpers } from '../../../_utils/reservationScheduleHelpers';
 import type { ReservationSchedule } from '@/app/_types/reservation/ReservationSchedule';
 import { dayjs } from '@/utils/dayjs';
 
