@@ -3,12 +3,6 @@ import { validateNftConditions } from './nftConditionValidator';
 import type { EventWithNFTs } from '@/app/_types/nft/nftValidation';
 import { prisma } from '@/utils/prisma';
 
-/**
- * NFT条件をチェックして、適切なレスポンスを返す共通関数
- * @param eventNfts - イベントのNFT条件配列
- * @param walletAddress - チェック対象のウォレットアドレス
- * @returns 成功時はnull、失敗時はNextResponseを返す
- */
 export const checkNftConditionsAndRespond = async (
   eventNfts: EventWithNFTs['eventNFTs'],
   walletAddress: string
@@ -23,40 +17,45 @@ export const checkNftConditionsAndRespond = async (
     walletAddress
   );
 
-  if (!validationResult.isValid) {
-    if (validationResult.failedCondition) {
-      return NextResponse.json(
-        {
-          ok: false,
-          status: 'エラー',
-          message: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
-          reason: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
-        },
-        { status: 403 }
-      );
-    } else if (validationResult.errorMessage) {
-      return NextResponse.json(
-        {
-          ok: false,
-          status: 'エラー',
-          message: validationResult.errorMessage,
-          reason: validationResult.errorMessage,
-        },
-        { status: 500 }
-      );
-    }
+  if (validationResult.isValid) return null;
+
+  // 特定の条件で失敗した場合
+  if (validationResult.failedCondition) {
+    return NextResponse.json(
+      {
+        ok: false,
+        status: 'エラー',
+        message: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
+        reason: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
+      },
+      { status: 403 }
+    );
   }
 
-  // すべての条件を満たした場合はnullを返す（処理継続）
-  return null;
+  // システムエラーの場合
+  if (validationResult.errorMessage) {
+    return NextResponse.json(
+      {
+        ok: false,
+        status: 'エラー',
+        message: validationResult.errorMessage,
+        reason: validationResult.errorMessage,
+      },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json(
+    {
+      ok: false,
+      status: 'エラー',
+      message: '予期しないエラーが発生しました',
+      reason: '予期しないエラーが発生しました',
+    },
+    { status: 500 }
+  );
 };
 
-/**
- * イベントIDとウォレットアドレスから直接NFT認証を行う
- * @param eventId - イベントID
- * @param walletAddress - ウォレットアドレス
- * @returns 成功時はnull、失敗時はNextResponseを返す
- */
 export const validateEventNftAccess = async (
   eventId: number,
   walletAddress: string
