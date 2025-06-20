@@ -20,13 +20,20 @@ export const checkNftConditionsAndRespond = async (
   if (validationResult.isValid) return null;
 
   // 特定の条件で失敗した場合
-  if (validationResult.failedCondition) {
+  if (
+    validationResult.failedConditions &&
+    validationResult.failedConditions.length > 0
+  ) {
+    const collectionNames = validationResult.failedConditions
+      .map((condition) => condition.collectionName)
+      .join(', ');
+
     return NextResponse.json(
       {
         ok: false,
         status: 'エラー',
-        message: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
-        reason: `NFT条件を満たしていません。対象コレクション: ${validationResult.failedCondition.collectionName}`,
+        message: `NFT条件を満たしていません。対象コレクション: ${collectionNames}`,
+        reason: `NFT条件を満たしていません。対象コレクション: ${collectionNames}`,
       },
       { status: 403 }
     );

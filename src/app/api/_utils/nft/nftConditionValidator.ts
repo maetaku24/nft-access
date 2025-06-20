@@ -63,14 +63,18 @@ export const validateNftConditions = async (
       )
     );
 
+    // 失敗した条件をすべて取得
+    const failedConditions = results
+      .filter((result) => !result.isEligible)
+      .map((result) => ({
+        collectionName: result.collectionName,
+      }));
+
     // 1つでも条件を満たさない場合は失敗
-    const failedCondition = results.find((result) => !result.isEligible);
-    if (failedCondition) {
+    if (failedConditions.length > 0) {
       return {
         isValid: false,
-        failedCondition: {
-          collectionName: failedCondition.collectionName,
-        },
+        failedConditions,
       };
     }
 

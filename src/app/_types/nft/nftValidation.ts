@@ -34,9 +34,9 @@ export interface NftCheckResult {
 // 複数のNFT条件をまとめて検証した結果
 export interface NftValidationResult {
   isValid: boolean;
-  failedCondition?: {
+  failedConditions?: Array<{
     collectionName: string;
-  };
+  }>;
   errorMessage?: string;
 }
 
