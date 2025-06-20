@@ -52,12 +52,13 @@ const getSpecificDates = (
   const dates = new Set<string>();
 
   eventSchedules.forEach(({ schedule }) => {
-    if (schedule.date) {
-      const scheduleDate = dayjs(schedule.date).startOf('day');
-      if (!scheduleDate.isBefore(today)) {
-        dates.add(scheduleDate.format('YYYY-MM-DD'));
-      }
-    }
+    // 日付が設定されていない場合は早期リターン
+    if (!schedule.date) return;
+
+    const scheduleDate = dayjs(schedule.date).startOf('day');
+    if (scheduleDate.isBefore(today)) return;
+
+    dates.add(scheduleDate.format('YYYY-MM-DD'));
   });
 
   return dates;
