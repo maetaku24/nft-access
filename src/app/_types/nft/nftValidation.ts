@@ -1,6 +1,4 @@
-/**
- * NFT条件チェック・バリデーション関連の型定義
- */
+import type { Standard, Network } from '@prisma/client';
 
 export interface BaseNftConfig {
   contractAddress: string;
@@ -18,8 +16,8 @@ export interface Erc1155Config extends BaseNftConfig {
 export interface NftCondition {
   nft: {
     collectionName: string;
-    standard: string;
-    network: string;
+    standard: Standard;
+    network: Network;
     contractAddress: string;
     tokenId: number | null;
     minBalance: number;
@@ -50,8 +48,8 @@ export interface EventWithNFTs {
   eventNFTs: Array<{
     nft: {
       collectionName: string;
-      standard: string;
-      network: string;
+      standard: Standard;
+      network: Network;
       contractAddress: string;
       tokenId: number | null;
       minBalance: number;
