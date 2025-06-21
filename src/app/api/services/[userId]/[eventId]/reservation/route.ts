@@ -66,23 +66,23 @@ export const POST = async (
     }
 
     // 予約の重複チェック
-    const conflictingReservations = await Promise.all(
-      reservations.map(async (reservation) => {
-        const existing = await prisma.reservation.findFirst({
-          where: {
-            eventId,
-            reservationDate: dayjs(reservation.reservationDate).toDate(),
-            startTime: reservation.startTime,
-            endTime: reservation.endTime,
-          },
-        });
-        return existing;
-      })
-    );
+    const conflictingReservations = await prisma.reservation.findMany({
+      where: {
+        eventId,
+        OR: reservations.map((reservation) => ({
+          reservationDate: dayjs(reservation.reservationDate).toDate(),
+          startTime: reservation.startTime,
+          endTime: reservation.endTime,
+        })),
+      },
+    });
 
-    if (conflictingReservations.some(Boolean)) {
+    if (conflictingReservations.length > 0) {
       return NextResponse.json(
-        { status: 'エラー', message: '選択された時間は既に予約済みです' },
+        {
+          status: 'エラー',
+          message: '選択された時間は既に予約済みです',
+        },
         { status: 409 }
       );
     }
