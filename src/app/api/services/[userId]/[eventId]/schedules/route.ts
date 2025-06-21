@@ -12,7 +12,12 @@ export const GET = async (
   try {
     // イベント情報を取得
     const event = await prisma.event.findUnique({
-      where: { id: eventId },
+      where: {
+        id: eventId,
+        profile: {
+          userId: params.userId,
+        },
+      },
       include: {
         profile: true,
         eventSchedules: {
@@ -24,7 +29,7 @@ export const GET = async (
     // イベントが存在しない場合
     if (!event) {
       return NextResponse.json(
-        { message: 'イベントが存在しません' },
+        { message: 'イベントが見つからないか、アクセス権限がありません' },
         { status: 404 }
       );
     }
