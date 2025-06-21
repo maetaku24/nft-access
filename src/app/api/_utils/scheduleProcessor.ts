@@ -8,6 +8,22 @@ import { generateTimeSlotsForDate } from '@/app/api/_utils/timeSlotGenerator';
 import { getJapaneseWeekday } from '@/app/api/_utils/weekdayHelper';
 import { dayjs } from '@/utils/dayjs';
 
+interface CreateSpecificDateSlotsParams {
+  schedule: Schedule;
+  today: dayjs.Dayjs;
+  eventLength: number;
+  reservations: ReservationListForSchedule;
+}
+
+interface createRecurringSlotsParams {
+  schedule: Schedule;
+  today: dayjs.Dayjs;
+  eventLength: number;
+  reservations: ReservationListForSchedule;
+  specificDates: Set<string>;
+  days: number;
+}
+
 export const processEventSchedules = (
   eventSchedules: EventScheduleList,
   eventLength: number,
@@ -23,22 +39,22 @@ export const processEventSchedules = (
   return eventSchedules.flatMap(({ schedule }) => {
     if (schedule.date !== null) {
       // 特定日付のスケジュール（例: 2024-06-20）
-      return createSpecificDateSlots(
+      return createSpecificDateSlots({
         schedule,
         today,
         eventLength,
-        reservations
-      );
+        reservations,
+      });
     } else if (schedule.weekday) {
       // 曜日繰り返しスケジュール（例: 毎週月曜日）
-      return createRecurringSlots(
+      return createRecurringSlots({
         schedule,
         today,
         eventLength,
         reservations,
         specificDates,
-        days
-      );
+        days,
+      });
     }
     return [];
   });
@@ -65,12 +81,12 @@ const getSpecificDates = (
 };
 
 // 特定日付のタイムスロットを作成
-const createSpecificDateSlots = (
-  schedule: Schedule,
-  today: dayjs.Dayjs,
-  eventLength: number,
-  reservations: ReservationListForSchedule
-): GeneratedTimeSlot[] => {
+const createSpecificDateSlots = ({
+  schedule,
+  today,
+  eventLength,
+  reservations,
+}: CreateSpecificDateSlotsParams): GeneratedTimeSlot[] => {
   // 日付が設定されていない場合はスキップ
   if (!schedule.date) {
     return [];
@@ -89,14 +105,14 @@ const createSpecificDateSlots = (
 };
 
 // 曜日繰り返しのタイムスロットを作成
-const createRecurringSlots = (
-  schedule: Schedule,
-  today: dayjs.Dayjs,
-  eventLength: number,
-  reservations: ReservationListForSchedule,
-  specificDates: Set<string>,
-  days: number
-): GeneratedTimeSlot[] => {
+const createRecurringSlots = ({
+  schedule,
+  today,
+  eventLength,
+  reservations,
+  specificDates,
+  days,
+}: createRecurringSlotsParams): GeneratedTimeSlot[] => {
   // 指定日数分の日付配列を生成
   const dateRange = Array.from({ length: days }, (_, i) => today.add(i, 'day'));
 
