@@ -14,3 +14,6 @@ export interface NftIndexResponse {
   status: number;
   data: Nft[];
 }
+
+// NFT条件チェック・バリデーション関連の型定義
+export * from './nftValidation';

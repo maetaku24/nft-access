@@ -1,19 +1,11 @@
 import type { Alchemy } from 'alchemy-sdk';
+import type {
+  Erc721Config,
+  Erc1155Config,
+} from '@/app/_types/nft/nftValidation';
 
 const UNLIMITED_BALANCE = 0;
 const MIN_OWNED_COUNT = 0;
-
-interface BaseNftConfig {
-  contractAddress: string;
-  minBalance: number;
-  maxBalance: number | null;
-}
-
-type Erc721Config = BaseNftConfig;
-
-interface Erc1155Config extends BaseNftConfig {
-  tokenId: string;
-}
 
 // ERC721
 export const checkErc721 = async (

@@ -8,13 +8,17 @@ export const useEventAuth = (userId: string, eventId: string) => {
   const { address } = useAccount();
 
   // イベント情報取得
-  const { data: eventData } = useFetch<EventData>(
+  const { data: eventData, isLoading: isEventLoading } = useFetch<EventData>(
     `/api/services/${userId}/${eventId}/public`,
     null
   );
 
   // NFT認証チェック
-  const { data: nftCheckData, error: nftError } = useFetch<NftCheckData>(
+  const {
+    data: nftCheckData,
+    error: nftError,
+    isLoading: isNftChecking,
+  } = useFetch<NftCheckData>(
     address ? `/api/events/${eventId}/nft?addr=${address}` : null,
     null
   );
@@ -24,5 +28,7 @@ export const useEventAuth = (userId: string, eventId: string) => {
     eventData,
     nftCheckData,
     nftError,
+    isEventLoading,
+    isNftChecking,
   };
 };

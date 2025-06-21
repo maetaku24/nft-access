@@ -32,6 +32,8 @@ export const useFetch = <T>(path: string | null, token?: string | null) => {
     [authToken]
   );
 
-  const results = useSWR(path, fetcher);
+  const shouldFetch = token === null || authToken;
+
+  const results = useSWR(shouldFetch ? path : null, fetcher);
   return results;
 };

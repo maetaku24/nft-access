@@ -16,3 +16,6 @@ export interface ReservationIndexResponse {
   status: number;
   data: Reservation[];
 }
+
+// タイムスロット生成関連の型定義
+export * from './timeSlot';
