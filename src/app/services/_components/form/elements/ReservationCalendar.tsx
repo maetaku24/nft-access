@@ -9,8 +9,7 @@ import { useState } from 'react';
 import { ReservationModal } from '../../modal/ReservationModal';
 import { ReservationDayCellContent } from './ReservationDayCellContent';
 import { Label } from '@/app/_components/ui/label';
-import { useFetch } from '@/app/_hooks/useFetch';
-import type { ReservationSchedule } from '@/app/_types/reservation/ReservationSchedule';
+import { useReservationSchedule } from '@/app/services/_hooks/useReservationSchedule';
 import { dayjs } from '@/utils/dayjs';
 
 interface Props {
@@ -23,10 +22,7 @@ export const ReservationCalendar: React.FC<Props> = ({ userId, eventId }) => {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
   // タイムスロットデータを取得
-  const { data: schedules = [] } = useFetch<ReservationSchedule[]>(
-    `/api/services/${userId}/${eventId}/schedules`,
-    null
-  );
+  const { data: schedules = [] } = useReservationSchedule({ userId, eventId });
 
   // 日付セルをクリックした時の処理
   const handleSelect = (arg: { dateStr: string }) => {

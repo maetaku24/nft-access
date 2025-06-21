@@ -5,7 +5,7 @@ import type { UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useAccount } from 'wagmi';
 import type { ReservationForm } from '../_schema/reservationFormSchema';
-import { useFetch } from '@/app/_hooks/useFetch';
+import { useReservationSchedule } from './useReservationSchedule';
 import type { CreateReservationRequest } from '@/app/_types/reservation/CreateReservation';
 import type { ReservationSchedule } from '@/app/_types/reservation/ReservationSchedule';
 import { postRequest } from '@/app/_utils/api';
@@ -35,10 +35,7 @@ export const useReservation = ({
   const { address: walletAddress, isConnected } = useAccount();
 
   // スケジュールデータのキャッシュ更新用
-  const { mutate } = useFetch<ReservationSchedule[]>(
-    `/api/services/${userId}/${eventId}/schedules`,
-    null
-  );
+  const { mutate } = useReservationSchedule({ userId, eventId });
 
   // 時間スロットを選択する処理
   const handleSelectSchedule = (schedule: ReservationSchedule) => {
