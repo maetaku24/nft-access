@@ -1,15 +1,15 @@
 import dayjs from 'dayjs';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import type { ReservationIndexResponse } from '@/app/_types/reservation';
+import type { EventListResponse } from '@/app/_types/reservation/EventListResponse';
 import type {
   UpdateReservationRequest,
   UpdateReservationResponse,
 } from '@/app/_types/reservation/UpdateReservation';
 import { handleError } from '@/app/api/_utils/handleError';
+import { checkReservationPermission } from '@/app/api/_utils/reservationPermission';
 import { prisma } from '@/utils/prisma';
 
-// NFT認証確認必要
 export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string; reservationId: string } }
@@ -18,29 +18,48 @@ export const GET = async (
     const eventId = parseInt(params.id);
     const reservationId = parseInt(params.reservationId);
 
-    const reservation = await prisma.reservation.findMany({
+    const { searchParams } = new URL(request.url);
+    const walletAddress = searchParams.get('addr');
+
+    // 権限チェック
+    await checkReservationPermission(
+      request,
+      eventId,
+      reservationId,
+      walletAddress || undefined
+    );
+
+    // 予約詳細を取得
+    const reservationDetail = await prisma.reservation.findUnique({
       where: {
         id: reservationId,
         eventId,
       },
     });
 
-    if (!reservation) {
+    if (!reservationDetail) {
       return NextResponse.json(
         { status: 'エラー', message: '指定された予約が見つかりません' },
         { status: 404 }
       );
     }
-    return NextResponse.json<ReservationIndexResponse>({
-      status: 200,
-      data: reservation,
-    });
+
+    const response = {
+      id: reservationDetail.id,
+      name: reservationDetail.name,
+      email: reservationDetail.email,
+      participants: reservationDetail.participants,
+      reservationDate: reservationDetail.reservationDate,
+      startTime: reservationDetail.startTime,
+      endTime: reservationDetail.endTime,
+    };
+
+    return NextResponse.json<EventListResponse>(response, { status: 200 });
   } catch (error) {
     return handleError(error);
   }
 };
 
-// NFT認証確認必要
 export const PUT = async (
   request: NextRequest,
   { params }: { params: { id: string; reservationId: string } }
@@ -48,20 +67,6 @@ export const PUT = async (
   try {
     const eventId = parseInt(params.id);
     const reservationId = parseInt(params.reservationId);
-
-    const reservation = await prisma.reservation.findUnique({
-      where: {
-        id: reservationId,
-        eventId,
-      },
-    });
-
-    if (!reservation) {
-      return NextResponse.json(
-        { status: 'エラー', message: '指定された予約が見つかりません' },
-        { status: 404 }
-      );
-    }
 
     const {
       name,
@@ -72,6 +77,14 @@ export const PUT = async (
       startTime,
       endTime,
     }: UpdateReservationRequest = await request.json();
+
+    // 権限チェック
+    await checkReservationPermission(
+      request,
+      eventId,
+      reservationId,
+      walletAddress
+    );
 
     const reservationData = await prisma.reservation.update({
       where: {
@@ -99,7 +112,6 @@ export const PUT = async (
   }
 };
 
-// NFT認証確認必要
 export const DELETE = async (
   request: NextRequest,
   { params }: { params: { id: string; reservationId: string } }
@@ -108,27 +120,25 @@ export const DELETE = async (
     const eventId = parseInt(params.id);
     const reservationId = parseInt(params.reservationId);
 
-    const reservation = await prisma.reservation.findUnique({
-      where: {
-        id: reservationId,
-        eventId,
-      },
-    });
+    const { searchParams } = new URL(request.url);
+    const walletAddress = searchParams.get('addr');
 
-    if (!reservation) {
-      return NextResponse.json(
-        { status: 'エラー', message: '指定された予約が見つかりません' },
-        { status: 404 }
-      );
-    }
+    // 権限チェック
+    await checkReservationPermission(
+      request,
+      eventId,
+      reservationId,
+      walletAddress || undefined
+    );
 
     const deletedReservation = await prisma.reservation.delete({
       where: {
         id: reservationId,
       },
     });
+
     return NextResponse.json(
-      { message: 'イベントを削除しました', deletedReservation },
+      { message: '予約を削除しました', deletedReservation },
       { status: 200 }
     );
   } catch (error) {
