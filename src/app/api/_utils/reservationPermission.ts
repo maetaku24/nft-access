@@ -2,19 +2,13 @@ import type { NextRequest } from 'next/server';
 import { getCurrentUser } from './getCurrentUser';
 import { prisma } from '@/utils/prisma';
 
-export interface PermissionCheckResult {
-  hasPermission: boolean;
-  reservation?: unknown;
-  event?: unknown;
-}
-
-// 予約に対する権限をチェック
+// 予約に対する権限をチェック（権限がない場合はエラーを投げる）
 export const checkReservationPermission = async (
   request: NextRequest,
   eventId: number,
   reservationId: number,
   walletAddress?: string
-): Promise<PermissionCheckResult> => {
+): Promise<void> => {
   const reservation = await prisma.reservation.findUnique({
     where: {
       id: reservationId,
@@ -30,7 +24,7 @@ export const checkReservationPermission = async (
   });
 
   if (!reservation) {
-    return { hasPermission: false };
+    throw new Error('指定された予約が見つかりません');
   }
 
   let isEventCreator = false;
@@ -51,9 +45,9 @@ export const checkReservationPermission = async (
       reservation.walletAddress.toLowerCase() === walletAddress.toLowerCase();
   }
 
-  return {
-    hasPermission: isEventCreator || isReservationOwner,
-    reservation,
-    event: reservation.events,
-  };
+  const hasPermission = isEventCreator || isReservationOwner;
+
+  if (!hasPermission) {
+    throw new Error('この予約にアクセスする権限がありません');
+  }
 };
