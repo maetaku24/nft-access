@@ -1,11 +1,11 @@
 'use client';
 
-export default function Home() {
+import { WalletReservationTable } from '@/app/services/_components/WalletReservationTable';
+
+export default function ReservationsPage() {
   return (
-    <div>
-      <h1 className='mt-40 flex items-start justify-center pt-12 text-6xl font-bold'>
-        予約管理画面
-      </h1>
+    <div className='container mx-auto flex w-full max-w-5xl justify-center p-6'>
+      <WalletReservationTable />
     </div>
   );
 }
