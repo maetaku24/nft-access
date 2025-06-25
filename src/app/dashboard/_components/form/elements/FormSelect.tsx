@@ -1,5 +1,6 @@
 import React from 'react';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
+import { Badge } from '@/app/_components/ui/badge';
 import {
   FormControl,
   FormField,
@@ -23,6 +24,7 @@ export interface FormSelectProps<T extends FieldValues>
   contentClassName?: string;
   onValueChange?: (value: string) => void;
   disabled?: boolean;
+  required?: boolean;
   [x: string]: unknown;
 }
 
@@ -35,6 +37,7 @@ export function FormSelect<S extends FieldValues>({
   contentClassName,
   onValueChange,
   disabled,
+  required,
   ...props
 }: FormSelectProps<S>) {
   return (
@@ -47,7 +50,14 @@ export function FormSelect<S extends FieldValues>({
         );
         return (
           <FormItem>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel className='flex items-center gap-2'>
+              {label}
+              {required && (
+                <Badge variant='destructive' className='text-xs shadow-none'>
+                  必須
+                </Badge>
+              )}
+            </FormLabel>
             <FormControl>
               <Select
                 {...props}

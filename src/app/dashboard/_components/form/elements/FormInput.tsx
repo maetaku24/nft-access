@@ -1,5 +1,6 @@
 import React from 'react';
 import type { FieldValues, UseControllerProps } from 'react-hook-form';
+import { Badge } from '@/app/_components/ui/badge';
 import {
   FormControl,
   FormField,
@@ -13,6 +14,7 @@ import { Input } from '@/app/_components/ui/input';
 export type FormInputProps<T extends FieldValues> = InputProps &
   UseControllerProps<T> & {
     label: string;
+    required?: boolean;
   };
 
 export function FormInput<S extends FieldValues>({
@@ -20,6 +22,7 @@ export function FormInput<S extends FieldValues>({
   control,
   label,
   disabled,
+  required,
   ...inputProps
 }: FormInputProps<S>) {
   return (
@@ -28,7 +31,14 @@ export function FormInput<S extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabel>{label}</FormLabel>
+          <FormLabel className='flex items-center gap-2'>
+            {label}
+            {required && (
+              <Badge variant='destructive' className='text-xs shadow-none'>
+                必須
+              </Badge>
+            )}
+          </FormLabel>
           <FormControl>
             <Input
               {...inputProps}
