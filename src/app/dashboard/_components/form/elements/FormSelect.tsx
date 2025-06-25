@@ -22,6 +22,7 @@ export interface FormSelectProps<T extends FieldValues>
   placeholder?: string;
   contentClassName?: string;
   onValueChange?: (value: string) => void;
+  disabled?: boolean;
   [x: string]: unknown;
 }
 
@@ -33,6 +34,7 @@ export function FormSelect<S extends FieldValues>({
   placeholder,
   contentClassName,
   onValueChange,
+  disabled,
   ...props
 }: FormSelectProps<S>) {
   return (
@@ -50,6 +52,7 @@ export function FormSelect<S extends FieldValues>({
               <Select
                 {...props}
                 value={String(field.value)}
+                disabled={disabled || field.disabled}
                 onValueChange={(value) => {
                   if (onValueChange) {
                     onValueChange(value);
@@ -62,6 +65,7 @@ export function FormSelect<S extends FieldValues>({
                   id={name}
                   onBlur={() => field.onBlur()}
                   className='bg-white'
+                  disabled={disabled || field.disabled}
                 >
                   <SelectValue placeholder={placeholder || '選択してください'}>
                     {selectedOption ? selectedOption.label : ''}

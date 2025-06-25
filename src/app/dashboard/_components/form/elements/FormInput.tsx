@@ -19,6 +19,7 @@ export function FormInput<S extends FieldValues>({
   name,
   control,
   label,
+  disabled,
   ...inputProps
 }: FormInputProps<S>) {
   return (
@@ -34,7 +35,7 @@ export function FormInput<S extends FieldValues>({
               onChange={field.onChange}
               value={field.value ?? ''}
               onBlur={field.onBlur}
-              disabled={field.disabled}
+              disabled={disabled || field.disabled}
               name={field.name}
               ref={field.ref}
               className='rounded-lg border border-gray-300 bg-white text-base text-gray-900 focus:border-blue-500 focus:ring-blue-500'
