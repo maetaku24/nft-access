@@ -7,6 +7,7 @@ import { ReservationPreviewCard } from './ReservationPreviewCard';
 import { Button } from '@/app/_components/ui/button';
 import { Form } from '@/app/_components/ui/form';
 import type { ReservationSchedule } from '@/app/_types/reservation/ReservationSchedule';
+import { generateParticipantOptions } from '@/app/_utils/participantOptions';
 import { FormInput } from '@/app/dashboard/_components/form/elements/FormInput';
 import { FormSelect } from '@/app/dashboard/_components/form/elements/FormSelect';
 
@@ -27,13 +28,8 @@ export const SchedulePicker: React.FC<Props> = ({
   onSubmit,
   onBack,
 }) => {
-  // 参加人数の選択肢を生成（利用可能人数分表示）
-  const participantOptions = Array.from(
-    { length: selectedSchedule.availableCount },
-    (_, i) => ({
-      value: String(i + 1),
-      label: `${i + 1}人`,
-    })
+  const participantOptions = generateParticipantOptions(
+    selectedSchedule.availableCount
   );
 
   return (
