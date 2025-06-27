@@ -8,7 +8,7 @@ export interface UpdateReservationRequest {
   reservationDate: Date;
   startTime: string;
   endTime: string;
-  status: Status;
+  status?: Status;
 }
 
 export interface UpdateReservationResponse {
