@@ -8,6 +8,7 @@ import type {
 } from '@/app/_types/reservation/UpdateReservation';
 import { handleError } from '@/app/api/_utils/handleError';
 import { checkReservationPermission } from '@/app/api/_utils/reservationPermission';
+import { validateReservationCapacity } from '@/app/api/_utils/reservationValidator';
 import { prisma } from '@/utils/prisma';
 
 export const GET = async (
@@ -85,6 +86,44 @@ export const PUT = async (
       reservationId,
       walletAddress
     );
+
+    // 現在の予約情報を取得
+    const currentReservation = await prisma.reservation.findUnique({
+      where: {
+        id: reservationId,
+        eventId,
+      },
+    });
+
+    if (!currentReservation) {
+      return NextResponse.json(
+        { status: 'エラー', message: '指定された予約が見つかりません' },
+        { status: 404 }
+      );
+    }
+
+    // 予約可能数チェック（更新時）
+    if (participants !== currentReservation.participants) {
+      const validationResult = await validateReservationCapacity({
+        eventId,
+        reservationDate,
+        startTime,
+        endTime,
+        participants,
+        excludeReservationId: reservationId,
+      });
+
+      if (!validationResult.isValid) {
+        return NextResponse.json(
+          { status: 'エラー', message: validationResult.errorMessage },
+          {
+            status: validationResult.errorMessage?.includes('見つかりません')
+              ? 404
+              : 400,
+          }
+        );
+      }
+    }
 
     const reservationData = await prisma.reservation.update({
       where: {
