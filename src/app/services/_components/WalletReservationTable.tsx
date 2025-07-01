@@ -29,16 +29,16 @@ export const WalletReservationTable: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
   const { address: walletAddress } = useAccount();
 
+  const apiUrl =
+    walletAddress && eventId
+      ? `/api/events/${eventId}/reservation/wallet/${encodeURIComponent(walletAddress)}`
+      : null;
+
   const {
     data = [],
     isLoading,
     mutate,
-  } = useFetch<EventListResponse[]>(
-    walletAddress && eventId
-      ? `/api/events/${eventId}/reservation/by-wallet?addr=${walletAddress}`
-      : null,
-    null
-  );
+  } = useFetch<EventListResponse[]>(apiUrl, null);
 
   const openModal = (
     reservation: EventListResponse,

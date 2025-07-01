@@ -8,12 +8,12 @@ import { prisma } from '@/utils/prisma';
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string; walletAddress: string } }
 ) => {
   try {
-    const eventId = parseInt(params.id);
-    const { searchParams } = new URL(request.url);
-    const walletAddress = searchParams.get('addr');
+    const { id, walletAddress: rawWalletAddress } = params;
+    const eventId = parseInt(id);
+    const walletAddress = decodeURIComponent(rawWalletAddress);
 
     if (!walletAddress) {
       return NextResponse.json(
