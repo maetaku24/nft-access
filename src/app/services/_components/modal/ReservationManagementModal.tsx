@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useAccount } from 'wagmi';
@@ -36,7 +36,6 @@ export const ReservationManagementModal: React.FC<Props> = ({
   mode,
   onSuccess,
 }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { token } = useSupabaseSession();
   const { address: walletAddress } = useAccount();
 
@@ -75,7 +74,6 @@ export const ReservationManagementModal: React.FC<Props> = ({
   const handleEdit = async (data: ReservationForm) => {
     if (!reservation) return;
 
-    setIsSubmitting(true);
     try {
       const url = walletAddress
         ? `/api/events/${eventId}/reservation/${reservation.id}?addr=${walletAddress}`
@@ -101,15 +99,12 @@ export const ReservationManagementModal: React.FC<Props> = ({
       onSuccess();
     } catch (error) {
       toast.error(`予約の変更に失敗しました: ${error}`);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   const handleCancel = async () => {
     if (!reservation) return;
 
-    setIsSubmitting(true);
     try {
       const url = walletAddress
         ? `/api/events/${eventId}/reservation/${reservation.id}?addr=${walletAddress}`
@@ -121,8 +116,6 @@ export const ReservationManagementModal: React.FC<Props> = ({
       onSuccess();
     } catch (error) {
       toast.error(`予約のキャンセルに失敗しました: ${error}`);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -133,7 +126,7 @@ export const ReservationManagementModal: React.FC<Props> = ({
       <ReservationManagementPicker
         reservation={reservation}
         form={form}
-        isSubmitting={isSubmitting}
+        isSubmitting={form.formState.isSubmitting}
         onSubmit={handleEdit}
         onCancel={handleCancel}
         onClose={onClose}
