@@ -9,11 +9,28 @@ interface Props {
   onSelect: (schedule: ReservationSchedule) => void;
 }
 
+const getCapacityTextColor = (
+  isFull: boolean,
+  isLowCapacity: boolean,
+  isReservable: boolean
+): string => {
+  if (isFull) return 'text-red-600';
+  if (isLowCapacity) return 'text-orange-600';
+  if (isReservable) return 'text-green-600';
+  return 'text-gray-600';
+};
+
 export const TimeSlotCard: React.FC<Props> = ({ schedule, onSelect }) => {
   const isReservable = reservationScheduleHelpers.isReservable(schedule);
   const isLowCapacity =
     schedule.availableCount <= 2 && schedule.availableCount > 0;
   const isFull = schedule.availableCount === 0;
+
+  const capacityTextColor = getCapacityTextColor(
+    isFull,
+    isLowCapacity,
+    isReservable
+  );
 
   return (
     <div
@@ -37,15 +54,7 @@ export const TimeSlotCard: React.FC<Props> = ({ schedule, onSelect }) => {
           </div>
           <div className='flex items-center space-x-2'>
             <div
-              className={`text-sm font-medium transition-colors duration-200 ${
-                isFull
-                  ? 'text-red-600'
-                  : isLowCapacity
-                    ? 'text-orange-600'
-                    : isReservable
-                      ? 'text-green-600'
-                      : 'text-gray-600'
-              }`}
+              className={`text-sm font-medium transition-colors duration-200 ${capacityTextColor}`}
             >
               残り {schedule.availableCount} 名
             </div>
