@@ -7,6 +7,7 @@ import type {
 } from '@/app/_types/reservation/CreateReservation';
 import { handleError } from '@/app/api/_utils/handleError';
 import { checkNftConditionsAndRespond } from '@/app/api/_utils/nft';
+import { validateReservationCapacity } from '@/app/api/_utils/reservationValidator';
 import { prisma } from '@/utils/prisma';
 
 export const POST = async (
@@ -65,26 +66,26 @@ export const POST = async (
       return nftValidationError;
     }
 
-    // 予約の重複チェック
-    const conflictingReservations = await prisma.reservation.findMany({
-      where: {
+    // 予約の定員チェック
+    for (const reservation of reservations) {
+      const validationResult = await validateReservationCapacity({
         eventId,
-        OR: reservations.map((reservation) => ({
-          reservationDate: dayjs(reservation.reservationDate).toDate(),
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-        })),
-      },
-    });
+        reservationDate: reservation.reservationDate,
+        startTime: reservation.startTime,
+        endTime: reservation.endTime,
+        participants: reservation.participants,
+      });
 
-    if (conflictingReservations.length > 0) {
-      return NextResponse.json(
-        {
-          status: 'エラー',
-          message: '選択された時間は既に予約済みです',
-        },
-        { status: 409 }
-      );
+      if (!validationResult.isValid) {
+        return NextResponse.json(
+          { status: 'エラー', message: validationResult.errorMessage },
+          {
+            status: validationResult.errorMessage?.includes('見つかりません')
+              ? 404
+              : 409,
+          }
+        );
+      }
     }
 
     // 予約作成

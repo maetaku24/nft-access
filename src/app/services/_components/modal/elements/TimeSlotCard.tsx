@@ -9,46 +9,71 @@ interface Props {
   onSelect: (schedule: ReservationSchedule) => void;
 }
 
+const getCapacityTextColor = (
+  isFull: boolean,
+  isLowCapacity: boolean,
+  isReservable: boolean
+): string => {
+  if (isFull) return 'text-red-600';
+  if (isLowCapacity) return 'text-orange-600';
+  if (isReservable) return 'text-green-600';
+  return 'text-gray-600';
+};
+
 export const TimeSlotCard: React.FC<Props> = ({ schedule, onSelect }) => {
   const isReservable = reservationScheduleHelpers.isReservable(schedule);
+  const isLowCapacity =
+    schedule.availableCount <= 2 && schedule.availableCount > 0;
+  const isFull = schedule.availableCount === 0;
+
+  const capacityTextColor = getCapacityTextColor(
+    isFull,
+    isLowCapacity,
+    isReservable
+  );
 
   return (
     <div
-      className={`rounded-lg border p-4 transition-colors ${
+      className={`cursor-pointer rounded-lg border p-4 transition-all duration-300 ease-out ${
         isReservable
-          ? 'cursor-pointer border-gray-200 bg-green-50 hover:bg-green-300/25'
-          : 'cursor-not-allowed border-gray-300 bg-gray-100'
+          ? 'border-gray-200 bg-white shadow-sm hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-lg'
+          : isFull
+            ? 'cursor-not-allowed border-gray-200 bg-gray-50'
+            : 'cursor-not-allowed border-gray-200 bg-gray-50'
       }`}
       onClick={() => (isReservable ? onSelect(schedule) : undefined)}
     >
       <div className='flex items-center justify-between'>
-        <div>
-          <div className='text-lg font-medium'>
-            {schedule.startTime} - {schedule.endTime}
-          </div>
+        <div className='space-y-2'>
           <div
-            className={`text-sm ${
-              schedule.availableCount <= 2 && schedule.availableCount > 0
-                ? 'font-medium text-orange-600'
-                : schedule.availableCount === 0
-                  ? 'font-medium text-red-600'
-                  : 'text-gray-600'
+            className={`text-lg font-semibold transition-colors duration-200 ${
+              isReservable ? 'text-gray-900' : 'text-gray-500'
             }`}
           >
-            残り {schedule.availableCount} / {schedule.maxParticipants} 名
+            {schedule.startTime} - {schedule.endTime}
+          </div>
+          <div className='flex items-center space-x-2'>
+            <div
+              className={`text-sm font-medium transition-colors duration-200 ${capacityTextColor}`}
+            >
+              残り {schedule.availableCount} 名
+            </div>
+            <span className='text-sm text-gray-400'>
+              / {schedule.maxParticipants} 名
+            </span>
           </div>
         </div>
         <div className='text-right'>
           <Button
             size='sm'
-            className={`mt-1 ${
+            className={`font-medium transition-all duration-200 ${
               isReservable
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-gray-500 hover:bg-gray-500'
+                ? 'bg-green-600 text-white hover:scale-105 hover:bg-green-700 hover:shadow-md'
+                : 'bg-gray-300 text-gray-500 hover:bg-gray-300'
             }`}
             disabled={!isReservable}
           >
-            {isReservable ? '予約する' : '満席のため予約不可'}
+            {isFull ? '満席' : isReservable ? '予約する' : '予約不可'}
           </Button>
         </div>
       </div>

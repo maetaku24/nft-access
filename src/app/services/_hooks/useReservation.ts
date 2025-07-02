@@ -6,7 +6,10 @@ import { toast } from 'react-toastify';
 import { useAccount } from 'wagmi';
 import type { ReservationForm } from '../_schema/reservationFormSchema';
 import { useReservationSchedule } from './useReservationSchedule';
-import type { CreateReservationRequest } from '@/app/_types/reservation/CreateReservation';
+import type {
+  CreateReservationRequest,
+  CreateReservationResponse,
+} from '@/app/_types/reservation/CreateReservation';
 import type { ReservationSchedule } from '@/app/_types/reservation/ReservationSchedule';
 import { postRequest } from '@/app/_utils/api';
 import { reservationScheduleHelpers } from '@/app/services/_utils/reservationScheduleHelpers';
@@ -84,7 +87,7 @@ export const useReservation = ({
         ],
       };
 
-      await postRequest(
+      await postRequest<CreateReservationRequest, CreateReservationResponse>(
         `/api/services/${userId}/${eventId}/reservation`,
         reservationData
       );

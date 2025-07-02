@@ -10,8 +10,8 @@ import { SkeletonTable } from '../skeleton/SkeletonTable';
 import { GenericTable } from '@/app/_components/GenericTable';
 import { Button } from '@/app/_components/ui/button';
 import { Label } from '@/app/_components/ui/label';
-
 import { useFetch } from '@/app/_hooks/useFetch';
+import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
 import type { DeleteReservationResponse } from '@/app/_types/reservation/DeleteReservationResponse';
 import type { EventListResponse } from '@/app/_types/reservation/EventListResponse';
 import { deleteRequest } from '@/app/_utils/api';
@@ -21,6 +21,7 @@ import { dayjs } from '@/utils/dayjs';
 export const EventReservationTable: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [reservationId, setReservationId] = useState<number | null>(null);
+  const { token } = useSupabaseSession();
   const { id } = useParams();
   const {
     data = [],
@@ -32,7 +33,8 @@ export const EventReservationTable: React.FC = () => {
     try {
       if (!reservationId) return;
       await deleteRequest<DeleteReservationResponse>(
-        `/api/events/${id}/reservation/${reservationId}`
+        `/api/events/${id}/reservation/${reservationId}`,
+        token ?? undefined
       );
       toast.info('予約をキャンセルしました。');
       mutate();
