@@ -3,7 +3,7 @@ import { instagramUrl } from '@/config/app-config';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className='bg-green-100 py-8'>
+    <footer className='bg-green-100 py-9'>
       <div className='mx-auto max-w-7xl px-4'>
         <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
           <span className='text-sm text-gray-900'>

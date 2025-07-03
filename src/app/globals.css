@@ -32,6 +32,12 @@ input[type='time'] {
   ベーススタイル
 ----------------------------- */
 
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 body {
   @apply bg-[#F5F5F7] text-gray-900;
 }

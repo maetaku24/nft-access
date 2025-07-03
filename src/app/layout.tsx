@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
+import { Footer } from './_components/Footer';
 import { Header } from './_components/Header';
 import './globals.css';
 import ToastProvider from './_components/ToastProvider';
@@ -20,12 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ja'>
-      <body className={noto.className}>
+    <html lang='ja' className='h-full'>
+      <body className={`flex h-full flex-col ${noto.className}`}>
         <ToastProvider>
           <RainbowKitProviders>
             <Header />
-            {children}
+            <main className='flex-1 pt-20'>{children}</main>
+            <Footer />
           </RainbowKitProviders>
         </ToastProvider>
       </body>
