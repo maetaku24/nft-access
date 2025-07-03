@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { instagramUrl } from '@/config/app-config';
 
 export const Footer: React.FC = () => {
   return (
@@ -10,13 +11,13 @@ export const Footer: React.FC = () => {
           </span>
           <div className='flex'>
             <a
-              href='https://www.instagram.com/maetaku_code/'
+              href={instagramUrl}
               target='_blank'
               rel='noopener noreferrer'
               className='group flex items-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-700 shadow-sm transition-all duration-300 hover:border-gray-300 hover:bg-gray-50 hover:shadow-md'
             >
               <Image
-                src='/Instagram_Glyph_Gradient.svg'
+                src='/Instagram_Glyph_Black.svg'
                 alt='Instagram'
                 width={18}
                 height={18}
