@@ -90,15 +90,6 @@ export const Header: React.FC = () => {
                   新規登録
                 </Button>
               </Link>
-              <Link href='/contact'>
-                <Button
-                  type='button'
-                  variant='outline'
-                  className='text-base font-semibold'
-                >
-                  お問い合わせ
-                </Button>
-              </Link>
             </>
           )}
         </div>
