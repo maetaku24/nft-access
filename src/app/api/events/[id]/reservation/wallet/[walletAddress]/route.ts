@@ -98,9 +98,14 @@ export const GET = async (
           },
         },
       },
-      orderBy: {
-        reservationDate: 'desc',
-      },
+      orderBy: [
+        {
+          reservationDate: 'asc',
+        },
+        {
+          startTime: 'asc',
+        },
+      ],
     });
 
     // 各予約に対して、その時間枠の予約可能数情報を計算
