@@ -30,7 +30,7 @@ export default function NewEventPage() {
   };
   return (
     <div>
-      <h1 className='mt-40 flex items-start justify-center text-4xl font-bold'>
+      <h1 className='flex items-start justify-center text-4xl font-bold'>
         新規イベント登録
       </h1>
       <EventForm onSubmit={handleSubmit} />

@@ -26,7 +26,9 @@ export default function RootLayout({
         <ToastProvider>
           <RainbowKitProviders>
             <Header />
-            <main className='flex-1 pt-20'>{children}</main>
+            <main className='min-h-[calc(100vh-120px)] flex-1 pt-40'>
+              {children}
+            </main>
             <Footer />
           </RainbowKitProviders>
         </ToastProvider>
