@@ -15,7 +15,7 @@ export default function SettingsLayout({
   return (
     <div className='mx-auto flex max-w-6xl items-center justify-center'>
       <Tabs value={active}>
-        <h1 className='mb-16 mt-28 flex items-center justify-start text-4xl font-bold'>
+        <h1 className='mb-16 flex items-center justify-start text-4xl font-bold'>
           各種設定
         </h1>
         <TabsList className='mb-10 flex justify-center gap-6'>

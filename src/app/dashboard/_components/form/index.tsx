@@ -40,7 +40,7 @@ export const EventForm: React.FC<Props> = ({ onSubmit, defaultValues }) => {
 
   return (
     <Form {...methods}>
-      <div className='flex min-h-screen items-start justify-center pt-20'>
+      <div className='flex items-start justify-center pt-20'>
         <div className='w-full max-w-4xl'>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className='space-y-20'>

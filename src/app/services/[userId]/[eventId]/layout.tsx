@@ -26,7 +26,7 @@ export default function ServiceEventLayout({ children }: Props) {
   // ウォレット未接続の場合
   if (!address) {
     return (
-      <main className='mx-auto mt-40 max-w-3xl space-y-10 px-4'>
+      <main className='mx-auto max-w-3xl space-y-10 px-4'>
         <h1 className='flex items-center justify-center text-4xl font-bold'>
           {eventData?.eventName || 'イベント'} 予約画面
         </h1>
@@ -67,7 +67,7 @@ export default function ServiceEventLayout({ children }: Props) {
   // NFT認証エラーの場合
   if (nftError) {
     return (
-      <main className='mx-auto mt-40 max-w-3xl space-y-10 px-4'>
+      <main className='mx-auto max-w-3xl space-y-10 px-4'>
         <h1 className='flex items-center justify-center text-3xl font-bold'>
           エラーが発生しました
         </h1>
@@ -84,7 +84,7 @@ export default function ServiceEventLayout({ children }: Props) {
   // NFT認証チェック中
   if (!nftCheckData) {
     return (
-      <main className='mx-auto mt-40 max-w-3xl space-y-10 px-4'>
+      <main className='mx-auto max-w-3xl space-y-10 px-4'>
         <h1 className='flex items-center justify-center text-3xl font-bold'>
           NFT認証中...
         </h1>
@@ -102,7 +102,7 @@ export default function ServiceEventLayout({ children }: Props) {
   // NFT認証失敗の場合
   if (!nftCheckData.ok) {
     return (
-      <main className='mx-auto mt-40 max-w-3xl space-y-10 px-4'>
+      <main className='mx-auto max-w-3xl space-y-10 px-4'>
         <h1 className='flex items-center justify-center text-3xl font-bold'>
           アクセス拒否
         </h1>
@@ -125,7 +125,7 @@ export default function ServiceEventLayout({ children }: Props) {
   // イベントデータ読み込み中
   if (!eventData) {
     return (
-      <main className='mx-auto mt-40 max-w-3xl space-y-10 px-4'>
+      <main className='mx-auto max-w-3xl space-y-10 px-4'>
         <h1 className='flex items-center justify-center text-3xl font-bold'>
           イベント情報を読み込み中...
         </h1>
@@ -142,7 +142,7 @@ export default function ServiceEventLayout({ children }: Props) {
 
   // NFT認証成功 - ServiceEventLayoutを表示
   return (
-    <div className='mx-auto mt-40 max-w-6xl space-y-10 px-4'>
+    <div className='mx-auto mb-16 max-w-6xl space-y-10 px-4'>
       <div className='flex items-center justify-center'>
         <div className='mb-6 flex items-center justify-center text-5xl font-bold'>
           {eventData?.eventName || 'イベント'}

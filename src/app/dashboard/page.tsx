@@ -19,7 +19,7 @@ export default function DashboardPage() {
   const hasEvents = events && events.length > 0;
 
   return (
-    <div className='mb-20 mt-40 flex w-full flex-col items-center space-y-4'>
+    <div className='flex w-full flex-col items-center space-y-4'>
       {hasEvents ? (
         <div className='w-full max-w-5xl px-4'>
           <EventCardList events={events} />

@@ -16,7 +16,7 @@ export default function LoginPage() {
   } = useLoginForm();
 
   return (
-    <div className='flex min-h-screen items-start justify-center bg-gray-100 pt-28'>
+    <div className='flex items-start justify-center bg-gray-100'>
       <div className='w-full max-w-lg'>
         <h1 className='mb-20 text-center text-[32px] font-bold text-gray-900'>
           ログイン

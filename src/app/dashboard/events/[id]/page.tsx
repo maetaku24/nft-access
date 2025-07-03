@@ -14,10 +14,10 @@ export default function DetailEventPage() {
 
   return (
     <div>
-      <h1 className='mt-40 flex items-start justify-center text-4xl font-bold'>
+      <h1 className='flex items-start justify-center text-4xl font-bold'>
         イベント詳細
       </h1>
-      <div className='mx-auto mt-40 flex w-full max-w-7xl items-center justify-between'>
+      <div className='mx-auto mt-16 flex w-full max-w-7xl items-center justify-between'>
         <div className='text-2xl font-semibold'>予約状況</div>
         <div className='flex items-center gap-5'>
           <ShareLink eventId={eventId} />

@@ -40,7 +40,7 @@ export default function EditEventPage() {
 
   return (
     <div>
-      <h1 className='mt-40 flex items-start justify-center text-4xl font-bold'>
+      <h1 className='flex items-start justify-center text-4xl font-bold'>
         イベント編集
       </h1>
       <EventForm
