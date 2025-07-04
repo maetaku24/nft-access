@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import type {
@@ -7,9 +6,9 @@ import type {
 } from '@/app/_types/reservation/CreateReservation';
 import type { EventListResponse } from '@/app/_types/reservation/EventListResponse';
 import { handleError } from '@/app/api/_utils/handleError';
+import { dayjs } from '@/utils/dayjs';
 import { prisma } from '@/utils/prisma';
 
-// NFT認証確認必要
 export const GET = async (
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -20,7 +19,39 @@ export const GET = async (
     const reservations = await prisma.reservation.findMany({
       where: {
         eventId,
+        OR: [
+          // 今日より後の日付の予約
+          {
+            reservationDate: {
+              gt: new Date(new Date().setHours(23, 59, 59, 999)),
+            },
+          },
+          // 今日の日付で現在時刻より後の予約
+          {
+            AND: [
+              {
+                reservationDate: {
+                  gte: new Date(new Date().setHours(0, 0, 0, 0)),
+                  lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                },
+              },
+              {
+                startTime: {
+                  gt: new Date().toTimeString().substring(0, 5),
+                },
+              },
+            ],
+          },
+        ],
       },
+      orderBy: [
+        {
+          reservationDate: 'asc',
+        },
+        {
+          startTime: 'asc',
+        },
+      ],
     });
 
     if (!reservations) {

@@ -85,7 +85,7 @@ export const EventReservationTable: React.FC = () => {
   return (
     <div className='w-full'>
       <Label className='text-base font-semibold'>予約一覧</Label>
-      <div className='mt-2 overflow-hidden rounded-md border border-black bg-white'>
+      <div className='mb-20 mt-2 overflow-hidden rounded-md border border-black bg-white'>
         <GenericTable
           data={data}
           columns={columns as ColumnDef<EventListResponse, unknown>[]}

@@ -48,28 +48,31 @@ export const SchedulePicker: React.FC<Props> = ({
             <FormInput
               control={form.control}
               name='name'
-              label='お名前 *'
+              label='お名前'
               placeholder='お名前'
               disabled={isSubmitting}
+              required={true}
             />
 
             <FormInput
               control={form.control}
               name='email'
-              label='メールアドレス *'
+              label='メールアドレス'
               type='email'
               placeholder='example@email.com'
               disabled={isSubmitting}
+              required={true}
             />
 
             <FormSelect
               control={form.control}
               name='participants'
-              label='参加人数 *'
+              label='参加人数'
               options={participantOptions}
               placeholder='参加人数を選択'
               contentClassName='z-[9999] max-h-[200px] overflow-y-auto'
               disabled={isSubmitting}
+              required={true}
               onValueChange={(value: string) => {
                 const numValue = parseInt(value, 10);
                 if (!isNaN(numValue)) {
