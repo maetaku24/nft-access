@@ -1,5 +1,6 @@
 'use client';
 
+import { UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
@@ -29,7 +30,9 @@ export default function UserMenu() {
       <DropdownMenuTrigger className='focus-visible:outline-none'>
         <Avatar>
           <AvatarImage src={data.iconUrl} alt='Rounded avatar' />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback className='bg-gray-200 text-gray-600'>
+            <UserRound className='size-5' />
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className='-translate-x-4 p-2'>

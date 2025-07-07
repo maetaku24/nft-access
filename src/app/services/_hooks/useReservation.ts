@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -28,6 +29,8 @@ export const useReservation = ({
   onClose,
   form,
 }: UseReservationProps) => {
+  const router = useRouter();
+
   // UI状態管理
   const [selectedSchedule, setSelectedSchedule] =
     useState<ReservationSchedule | null>(null);
@@ -96,6 +99,7 @@ export const useReservation = ({
 
       // スケジュールデータを最新に更新
       mutate();
+      router.replace(`/services/${userId}/${eventId}/reservations`);
 
       // 成功時のリセットと閉じる処理
       handleResetAndClose();

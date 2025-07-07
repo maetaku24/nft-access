@@ -15,19 +15,6 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* 時刻入力のカレンダーアイコンを非表示 */
-input[type='time']::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
-  appearance: none;
-  opacity: 0;
-  pointer-events: none;
-}
-input[type='time'] {
-  -webkit-appearance: none;
-  appearance: none;
-}
-
 /* ----------------------------
   ベーススタイル
 ----------------------------- */

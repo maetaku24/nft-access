@@ -49,7 +49,12 @@ export const ConfirmDialog: React.FC<Props> = ({
             {confirmText}
           </Button>
           <DialogClose asChild>
-            <Button variant='outline'>戻る</Button>
+            <Button
+              variant='outline'
+              className='border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white'
+            >
+              戻る
+            </Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
