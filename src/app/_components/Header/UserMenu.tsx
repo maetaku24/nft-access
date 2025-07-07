@@ -3,7 +3,6 @@
 import { UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useFetch } from '../../_hooks/useFetch';
 import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
 import {
   DropdownMenu,
@@ -11,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { useFetch } from '@/app/_hooks/useFetch';
 import type { IconUrlResponse } from '@/app/_types/profile/IconUrlResponse';
 import { supabase } from '@/utils/supabase';
 
