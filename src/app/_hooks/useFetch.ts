@@ -13,7 +13,11 @@ export const useFetch = <T>(path: string | null, token?: string | null) => {
 
   const fetcher = useCallback(
     async (path: string) => {
-      const res = await fetch(`${appBaseUrl}${path}`, {
+      // 本番環境では相対パスを使用してCORSエラーを回避
+      const apiUrl =
+        process.env.NODE_ENV === 'production' ? path : `${appBaseUrl}${path}`;
+
+      const res = await fetch(apiUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

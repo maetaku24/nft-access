@@ -4,11 +4,13 @@ import { supabase } from '@/utils/supabase';
 
 export const getCurrentUser = async (request: NextRequest) => {
   const token = request.headers.get('Authorization') ?? '';
+
   if (!token) {
     throw new Error('認証トークンがありません');
   }
 
   const { data, error } = await supabase.auth.getUser(token);
+
   if (error) {
     throw new Error('認証に失敗しました');
   }
