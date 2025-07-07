@@ -13,18 +13,9 @@ export const useFetch = <T>(path: string | null, token?: string | null) => {
 
   const fetcher = useCallback(
     async (path: string) => {
-      // デバッグログ追加
-      console.log('🔍 API Request Debug:');
-      console.log('Base URL:', appBaseUrl);
-      console.log('Path:', path);
-      console.log('Auth Token exists:', !!authToken);
-      console.log('Auth Token length:', authToken?.length || 0);
-      console.log('Auth Token preview:', authToken?.substring(0, 20) + '...');
-
       // 本番環境では相対パスを使用してCORSエラーを回避
       const apiUrl =
         process.env.NODE_ENV === 'production' ? path : `${appBaseUrl}${path}`;
-      console.log('Final URL:', apiUrl);
 
       const res = await fetch(apiUrl, {
         method: 'GET',
@@ -34,18 +25,12 @@ export const useFetch = <T>(path: string | null, token?: string | null) => {
         },
       });
 
-      // レスポンスのデバッグ
-      console.log('Response status:', res.status);
-      console.log('Response ok:', res.ok);
-
       if (!res.ok) {
         const errorData = await res.json();
-        console.error('❌ API Error:', errorData);
         throw new Error(errorData.message);
       }
 
       const data: T = await res.json();
-      console.log('✅ API Success:', data);
       return data;
     },
     [authToken]
