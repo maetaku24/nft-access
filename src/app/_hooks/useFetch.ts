@@ -15,12 +15,18 @@ export const useFetch = <T>(path: string | null, token?: string | null) => {
     async (path: string) => {
       // デバッグログ追加
       console.log('🔍 API Request Debug:');
-      console.log('URL:', `${appBaseUrl}${path}`);
+      console.log('Base URL:', appBaseUrl);
+      console.log('Path:', path);
       console.log('Auth Token exists:', !!authToken);
       console.log('Auth Token length:', authToken?.length || 0);
       console.log('Auth Token preview:', authToken?.substring(0, 20) + '...');
 
-      const res = await fetch(`${appBaseUrl}${path}`, {
+      // 本番環境では相対パスを使用してCORSエラーを回避
+      const apiUrl =
+        process.env.NODE_ENV === 'production' ? path : `${appBaseUrl}${path}`;
+      console.log('Final URL:', apiUrl);
+
+      const res = await fetch(apiUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
