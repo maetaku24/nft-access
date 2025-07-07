@@ -150,9 +150,27 @@ export const ScheduleModal: React.FC<Props> = ({
                         <FormItem className='relative flex'>
                           <FormControl>
                             <Input
-                              type='time'
+                              type='text'
+                              placeholder='09:00'
                               {...field}
-                              className='w-40 rounded-sm text-center'
+                              className='w-40 rounded-sm px-3 py-2 text-center font-mono'
+                              maxLength={5}
+                              onChange={(e) => {
+                                let value = e.target.value.replace(
+                                  /[^\d:]/g,
+                                  ''
+                                );
+                                if (
+                                  value.length === 2 &&
+                                  !value.includes(':')
+                                ) {
+                                  value = value + ':';
+                                }
+                                if (value.length > 5) {
+                                  value = value.slice(0, 5);
+                                }
+                                field.onChange(value);
+                              }}
                             />
                           </FormControl>
                           {fieldState.error && (
@@ -163,9 +181,7 @@ export const ScheduleModal: React.FC<Props> = ({
                         </FormItem>
                       )}
                     />
-
                     <span>ー</span>
-
                     {/* 終了時間 */}
                     <FormField
                       control={modal.control}
@@ -174,9 +190,27 @@ export const ScheduleModal: React.FC<Props> = ({
                         <FormItem className='relative flex'>
                           <FormControl>
                             <Input
-                              type='time'
+                              type='text'
+                              placeholder='18:00'
                               {...field}
-                              className='flex w-40 rounded-sm text-center'
+                              className='w-40 rounded-sm px-3 py-2 text-center font-mono'
+                              maxLength={5}
+                              onChange={(e) => {
+                                let value = e.target.value.replace(
+                                  /[^\d:]/g,
+                                  ''
+                                );
+                                if (
+                                  value.length === 2 &&
+                                  !value.includes(':')
+                                ) {
+                                  value = value + ':';
+                                }
+                                if (value.length > 5) {
+                                  value = value.slice(0, 5);
+                                }
+                                field.onChange(value);
+                              }}
                             />
                           </FormControl>
                           {fieldState.error && (
@@ -229,9 +263,9 @@ export const ScheduleModal: React.FC<Props> = ({
                   render={({ field, fieldState }) => (
                     <FormItem className='border-b pb-6 '>
                       <FormControl>
-                        <div className='mt-8 flex items-end gap-1'>
+                        <div className='mt-8 flex items-end gap-2'>
                           <span className='text-sm font-medium'>
-                            この時間帯は
+                            各時間帯最大
                           </span>
                           <Input
                             type='number'
@@ -243,7 +277,7 @@ export const ScheduleModal: React.FC<Props> = ({
                             }}
                           />
                           <span className='text-sm font-medium'>
-                            人の予約を受け付ける
+                            人まで同時に予約可能
                           </span>
                         </div>
                       </FormControl>
@@ -258,7 +292,11 @@ export const ScheduleModal: React.FC<Props> = ({
           })}
         </div>
         <div className='mt-4 flex justify-end gap-2 '>
-          <Button variant='outline' onClick={onClose}>
+          <Button
+            variant='outline'
+            className='border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white'
+            onClick={onClose}
+          >
             キャンセル
           </Button>
           <Button
