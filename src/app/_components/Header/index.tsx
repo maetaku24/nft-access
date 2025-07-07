@@ -1,5 +1,6 @@
 'use client';
 
+import { MessageSquare } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, usePathname } from 'next/navigation';
 import { useMemo } from 'react';
@@ -9,6 +10,7 @@ import Logo from './Logo';
 import UserMenu from './UserMenu';
 import { WalletConnectButton } from './WalletConnectButton';
 import { useSupabaseSession } from '@/app/_hooks/useSupabaseSession';
+import { feedbackUrl } from '@/config/app-config';
 
 export const Header: React.FC = () => {
   const { session, isLoding } = useSupabaseSession();
@@ -68,7 +70,19 @@ export const Header: React.FC = () => {
         <Logo />
       </Link>
       {!isLoding && (
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-5'>
+          {/* フィードバックボタン */}
+          <a
+            href={feedbackUrl}
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center gap-1 rounded-full bg-white px-3 py-2 text-xs font-medium text-gray-600 shadow-md transition-all duration-200 hover:bg-gray-50 hover:text-gray-800 hover:shadow-lg'
+            title='フィードバック'
+          >
+            <MessageSquare size={14} />
+            <span>フィードバック</span>
+          </a>
+
           {session ? (
             <>
               <HeaderActionButton />
