@@ -9,6 +9,7 @@ import {
 } from '@/app/_components/ui/avatar';
 import { Button } from '@/app/_components/ui/button';
 import { Label } from '@/app/_components/ui/label';
+import { compressImageFile } from '@/app/_utils/imageCompression';
 import { avatarBucket } from '@/config/app-config';
 import { supabase } from '@/utils/supabase';
 
@@ -25,10 +26,11 @@ export const AvatarSettings = () => {
     }
 
     const file = event.target.files[0];
+    const compressedFile = await compressImageFile(file);
     const filePath = `private/${uuidv4()}`;
     const { data, error } = await supabase.storage
       .from(avatarBucket)
-      .upload(filePath, file, {
+      .upload(filePath, compressedFile, {
         cacheControl: '3600',
         upsert: false,
       });
