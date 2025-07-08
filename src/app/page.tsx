@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div>
       {/* ヒーローセクション */}
-      <section className='container mx-auto px-4 py-12 sm:py-16 md:py-20 lg:py-24'>
+      <section className='container mx-auto max-w-6xl px-4 py-12 sm:py-16 md:py-20 lg:py-24'>
         <div className='grid grid-cols-1 items-center gap-8 sm:gap-10 md:gap-12 lg:grid-cols-2 lg:gap-16'>
           {/* 左側のテキストコンテンツ */}
           <div className='order-first space-y-6 sm:space-y-8 lg:pl-8'>
@@ -32,20 +32,24 @@ export default function Home() {
               </p>
               <div className='space-y-3 text-center text-sm leading-relaxed text-gray-600 sm:space-y-4 sm:text-base lg:text-left'>
                 <p className='text-gray-700'>
-                  NFT Accessは、NFT保有者だけが利用できる予約管理システムです。
-                </p>
-                <p className='text-gray-700'>
-                  NFT認証を通して、安全かつ簡単にイベントやサービスを予約できます。
+                  NFT
+                  Accessは、NFT保有者だけが利用できる予約管理システムです。NFT認証を通して、安全かつ簡単にイベントやサービスを予約できます。
                 </p>
               </div>
             </div>
 
-            <div className='flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 lg:justify-start'>
+            <div className='flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4'>
               <Link href='/login' className='w-full sm:w-auto'>
-                <Button size='lg'>ログイン</Button>
+                <Button size='lg' className='w-full sm:w-auto'>
+                  ログイン
+                </Button>
               </Link>
               <Link href='/signup' className='w-full sm:w-auto'>
-                <Button size='lg' variant='outline'>
+                <Button
+                  size='lg'
+                  variant='outline'
+                  className='w-full sm:w-auto'
+                >
                   新規登録
                 </Button>
               </Link>
@@ -68,7 +72,7 @@ export default function Home() {
 
       {/* ABOUTセクション */}
       <section className='bg-white/70 py-12 backdrop-blur-sm sm:py-16 md:py-20 lg:py-24'>
-        <div className='container mx-auto px-4'>
+        <div className='container mx-auto max-w-6xl px-4'>
           <div className='mb-12 text-center sm:mb-16'>
             <div className='inline-block'>
               <h2 className='relative mb-4 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl'>
