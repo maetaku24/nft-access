@@ -47,12 +47,12 @@ export const Header: React.FC = () => {
     const fallbackHref = '/services';
 
     return (
-      <header className='fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-green-100 px-4 py-3 shadow'>
+      <header className='fixed inset-x-0 top-0 z-50 flex items-center justify-between bg-green-100 px-4 py-3 shadow sm:px-6 md:px-11'>
         <Link
           href={
             userId && eventId ? `/services/${userId}/${eventId}` : fallbackHref
           }
-          className='h-[40px] w-[200px]'
+          className='h-[40px] w-[200px] sm:h-[45px] sm:w-[250px] md:h-[50px] md:w-[275px]'
         >
           <Logo />
         </Link>
@@ -71,12 +71,11 @@ export const Header: React.FC = () => {
       </Link>
       {!isLoding && (
         <div className='flex items-center gap-5'>
-          {/* フィードバックボタン */}
           <a
             href={feedbackUrl}
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center gap-1 rounded-full bg-white px-3 py-2 text-xs font-medium text-gray-600 shadow-md transition-all duration-200 hover:bg-gray-50 hover:text-gray-800 hover:shadow-lg'
+            className='hidden items-center gap-1 rounded-full bg-white px-3 py-2 text-xs font-medium text-gray-600 shadow-md transition-all duration-200 hover:bg-gray-50 hover:text-gray-800 hover:shadow-lg sm:flex'
             title='フィードバック'
           >
             <MessageSquare size={14} />
