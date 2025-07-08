@@ -12,7 +12,11 @@ const noto = Noto_Sans_JP({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: appName,
-  description: '',
+  description:
+    'NFTホルダー限定の予約システム。お持ちのNFTでログインして、特別なイベントやサービスを予約できます。',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({
